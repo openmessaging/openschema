@@ -1,0 +1,1 @@
+# openmessaging-openmeta-spec
