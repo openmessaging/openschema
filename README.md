@@ -1,1 +1,1 @@
-# openmessaging-openmeta-spec
+# openmessaging-openschema
