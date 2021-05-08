@@ -1,1 +1,1 @@
-# openmessaging-openschema
+# openschema
