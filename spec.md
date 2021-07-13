@@ -70,7 +70,7 @@ Payload Schema用于描述消息的Payload数据。
 | id               | 全局唯一标识，用于确定该schema                               |                                                              |
 | comment          | payload注释说明                                              |                                                              |
 | serialization    | 序列化方式：hissian、json、pb、avro、user-defined            |                                                              |
-| schemaType       | schema类型的枚举：NONE、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
+| schemaType       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schemaDefinition | schema具体的内容，以一种方式来描述数据格式                   | NONE：无 PB：给出PB描述文件 AVRO：给出AVRO Schema内容 USER-DEFINED：给出用户自定义的信息 基础内容类型：无 |
 | validator        | 值校验器                                                     | 对Schema描述的对象的值进行校验                               |
 | version          | schema的版本信息                                             | 以消息为例，Payload可能会变，这个时候需要版本来标识区别不同的Schema |
