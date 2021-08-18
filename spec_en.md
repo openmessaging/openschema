@@ -1,11 +1,11 @@
 # OpenSchema Specification
  
-## I. Abstract
+## 1. Abstract
 
-This specificition defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
+This specification defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
 
 
-## II. Compatibility Mode
+## 2. Compatibility Mode
 
 The compatibility mode defines the compatibility rules concerning which changes you’re allowed to make to the schema without breaking the consumers, and how to handle upgrades for the different types of schema changes
 
@@ -21,30 +21,30 @@ The compatibility mode defines the compatibility rules concerning which changes 
 
 
 
-## III. Content-Types
+## 3. Content-Types
 
 The OpenSchema REST service communicates using HTTP+JSON.
 
-The request SHOULD specify the most specific format and version information via the HTTP Accept header, and MAY include several authentication settings:
+The request should specify the most specific format and version information via the HTTP Accept header, and MAY include several authentication settings:
 
 > Accept:application/vnd.openschema.v1+json
 
 
 
-## IV. ErrorCode
+## 4. ErrorCode
 
 The HTTP response of all requests is consistent with the HTTP standard. The detailed error code is determined by the returned JSON response. The format is as follows:
 
 ```json
 {
-"error_code": 422,
-"error_message": "schema info cannot be empty"
+    "error_code": 422,
+    "error_message": "schema info cannot be empty"
 }
 ```
 
 
 
-## V. Schema Format
+## 5. Schema Format
 
 ### 5.1 Metadata Information
 
@@ -81,30 +81,30 @@ Example:
 
 ```json
 {
-"subject": "test-topic",
-"namespace": "org.apache.rocketmq",
-"tenant": "messaging/rocketmq",
-"app": "rocketmq",
-"description": "rocketmq user infomation",
-"compatibility": "NONE",
-"validator": "a.groovy",
-"comment": "Rocketmq user infomation",
-"schemaType": "AVRO",
-"schemaDefinition": [{
-"name": "id",
-"type": "string"
-},
-{
-"name": "age",
-"type": "short"
-}
-]
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user infomation",
+    "compatibility": "NONE",
+    "validator": "a.groovy",
+    "comment": "Rocketmq user infomation",
+    "schemaType": "AVRO",
+    "schemaDefinition": [{
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "age",
+                "type": "short"
+        }
+    ]
 }
 ```
 
 
 
-## VI. Correlation Between Subjects and Topics
+## 6. Correlation Between Subjects and Topics
 
 ### 6.1 Relationship Between Subjects and Topics
 
@@ -131,7 +131,7 @@ Subject Name can be defined and customized according to other system's requireme
 
 
 
-## VII. REST Interface Definition
+## 7. REST Interface Definition
 
 - **Common Parameter**
 
@@ -140,7 +140,7 @@ Subject Name can be defined and customized according to other system's requireme
 | Common request parameter | tenant | string | Optional | Tenant |
 | | namespace | string | Optional | Namespace |
 | Common Response parameter | error_code | int | Required | Error code |
-| | error_message | string | Required | Error explanation |
+| | error_message | string | Required | Error message |
 
 - **Version Rules**
 
@@ -205,21 +205,21 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 ```json
 {
-"version": 1,
-"id": "20",
-"serialization": "PB",
-"schemaType": "AVRO",
-"schemaDefinition": [{
-"name": "id",
-"type": "string"
-},
-{
-"name": "age",
-"type": "short"
-}
-],
-"validator": "a.groovy",
-"comment": "user information"
+    "version": 1,
+    "id": "20",
+    "serialization": "PB",
+    "schemaType": "AVRO",
+    "schemaDefinition": [{
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "age",
+            "type": "short"
+        }
+    ],
+    "validator": "a.groovy",
+    "comment": "user information"
 }
 ```
 
@@ -276,7 +276,7 @@ curl -X GET http://localhost:8081/schemas/ids/1/versions
 
 
 
-### 7.2 Subject-related REST API Interfaces
+### 7.2 Subject-related API Interfaces
 
 #### 7.2. 1 Obtaining All Subjects
 
@@ -475,12 +475,12 @@ curl -X GET http://localhost:8081/subjects/test-value
 
 ```json
 {
-"subject": "test-topic",
-"namespace": "org.apache.rocketmq",
-"tenant": "messaging/rocketmq",
-"app": "rocketmq",
-"description": "JSON",
-"compatibility": "NONE"
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "JSON",
+    "compatibility": "NONE"
 }
 ```
 #### 7.2. 5 Obtaining Schema Definitions Based on Subject and Schema Version
@@ -540,27 +540,30 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 
 ```json
 {
-"subject": "test-topic",
-"namespace": "org.apache.rocketmq",
-"tenant": "messaging/rocketmq",
-"app": "rocketmq",
-"description": "rocketmq user information",
-"compatibility": "NONE",
-"schema": {
-"version": 1,
-"id": "20",
-"serialization": "PB",
-"schemaType": "AVRO",
-"schemaDefinition": [{
-"name": "id",
-"type": "string"
-}, {
-"name": "amount",
-"type": "double"
-}],
-"validator": "a.groovy",
-"comment": "rocketmq user information"
-}
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user information",
+    "compatibility": "NONE",
+    "schema": {
+        "version": 1,
+        "id": "20",
+        "serialization": "PB",
+        "schemaType": "AVRO",
+        "schemaDefinition": [
+            {
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "amount",
+                "type": "double"
+            }
+        ],
+        "validator": "a.groovy",
+        "comment": "rocketmq user information"
+    }
 }
 ```
 
@@ -618,15 +621,18 @@ POST /subjects/(string: subject)/versions
 curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/versions --data'
 {
-"serialization": "PB",
-"schemaType": "AVRO",
-"schemaDefinition": [{
-"name": "id",
-"type": "string"
-}, {
-"name": "amount",
-"type": "double"
-}]
+    "serialization": "PB",
+    "schemaType": "AVRO",
+    "schemaDefinition": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "amount",
+            "type": "double"
+        }
+    ]
 }'
 ```
 
@@ -699,13 +705,13 @@ POST /subjects/(string: subject)/
 curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/ --data'
 {
-"subject": "test-topic",
-"namespace": "org.apache.rocketmq",
-"tenant": "messaging/rocketmq",
-"app": "rocketmq",
-"description": "rocketmq user information",
-"compatibility": "NONE",
-"status": "deprecated"
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user information",
+    "compatibility": "NONE",
+    "status": "deprecated"
 }
 '
 ```
@@ -715,13 +721,13 @@ http://localhost:8081/subjects/test-value/ --data'
 
 ```json
 {
-"subject": "test-topic",
-"namespace": "org.apache.rocketmq",
-"tenant": "messaging/rocketmq",
-"app": "rocketmq",
-"description": "rocketmq user information",
-"compatibility": "NONE",
-"status": "deprecated"
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user information",
+    "compatibility": "NONE",
+    "status": "deprecated"
 }
 ```
 
@@ -779,7 +785,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 
 
-### 7.3 Compatibility-Related REST API Interfaces
+### 7.3 Compatibility-Related API Interfaces
 
 #### 7.3. 1 Testing if new schema is compatible against Compatibility Setting of this Subject
 
