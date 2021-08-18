@@ -181,17 +181,17 @@ GET /schemas/ids/{string: id}
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding schema information does not exist.
+    40401: The corresponding schema information does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -914,21 +914,21 @@ PUT /config/(string: subject)
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The subject does not exist.
+    40401: The subject does not exist.
 
-422:
+    422:
 
-42201 - Compatibility format error
+    42201 - Compatibility format error
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
