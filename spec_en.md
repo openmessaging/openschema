@@ -1,5 +1,5 @@
-<H2> OpenSchema Specification
-
+# OpenSchema Specification
+ 
 ## I. Abstract
 
 This specificition defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
@@ -137,9 +137,9 @@ Subject Name can be defined and customized according to other system's requireme
 
 | | Parameter name | Parameter type | Required or not | Parameter description |
 | ------------ | ------------- | -------- | -------- | -------- |
-| Commonly request parameter | tenant | string | Optional | Tenant |
+| Common request parameter | tenant | string | Optional | Tenant |
 | | namespace | string | Optional | Namespace |
-| Commonly Response parameter | error_code | int | Required | Error code |
+| Common Response parameter | error_code | int | Required | Error code |
 | | error_message | string | Required | Error explanation |
 
 - **Version Rules**
@@ -175,7 +175,7 @@ GET /schemas/ids/{string: id}
 - Response parameters
 
 
-|Parameter name|Parameter type|Required or not||Parameter description|
+|Parameter name|Parameter type|Required or not|Parameter description|
 | -------- | -------- | -------- | -------------------- |
 | schema | JSON | No | Return the specific schema definition |
 
@@ -248,17 +248,17 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding schema information does not exist.
+    40401: The corresponding schema information does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -298,13 +298,13 @@ None
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -344,17 +344,17 @@ GET /subjects/(string: subject)/versions
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding openschema information does not exist.
+    40401: The corresponding openschema information does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -394,17 +394,17 @@ DELETE /subjects/(string: subject)
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding openschema information does not exist.
+    40401: The corresponding openschema information does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -451,17 +451,17 @@ GET /subjects/(string: subject)
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding openschema information does not exist.
+    40401: The corresponding openschema information does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -514,19 +514,19 @@ curl -X GET http://localhost:8081/subjects/test-value
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The corresponding openschema information does not exist.
+    40401: The corresponding openschema information does not exist.
 
-40402 - The version does not exist.
+    40402 - The version does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -593,23 +593,23 @@ POST /subjects/(string: subject)/versions
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-409:
+    409:
 
-40901 - Compatibility Error
+    40901 - Compatibility Error
 
-422:
+    422:
 
-42201 - Incorrect format
+    42201 - Incorrect format
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
-50002 - Timeout
+    50002 - Timeout
 
 - Sample request
 
@@ -678,19 +678,19 @@ POST /subjects/(string: subject)/
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-422:
+    422:
 
-42201 - Incorrect format
+    42201 - Incorrect format
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
-50002 - Timeout
+    50002 - Timeout
 
 - Sample request
 
@@ -749,19 +749,19 @@ http://localhost:8081/subjects/test-value/ --data'
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The subject does not exist.
+    40401: The subject does not exist.
 
-40402-The version does not exist.
+    40402-The version does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -804,25 +804,25 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The subject does not exist.
+    40401: The subject does not exist.
 
-40402-The version does not exist.
+    40402-The version does not exist.
 
-422: The format is incorrect.
+    422: The format is incorrect.
 
-42201: Schema format error
+    42201: Schema format error
 
-42202: The version format is incorrect.
+    42202: The version format is incorrect.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
@@ -863,17 +863,17 @@ GET /config/(string: subject)
 
 - Error code.
 
-401:
+    401:
 
-40101 - Unauthorized Error
+    40101 - Unauthorized Error
 
-404:
+    404:
 
-40401: The subject does not exist.
+    40401: The subject does not exist.
 
-500:
+    500:
 
-50001 - Storage Service Error
+    50001 - Storage Service Error
 
 - Sample request
 
