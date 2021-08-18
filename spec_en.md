@@ -48,7 +48,7 @@ The HTTP response of all requests is consistent with the HTTP standard. The deta
 
 ### 5.1 Metadata Information
 
-The following Metadata-information describes Subject definition in OpenSchema specifiction.
+The following Metadata-information describes Subject definition in OpenSchema specification.
 
 |MetaInfo|Meaning|Example|
 | ------------- | ------------------------ | ------------------------------- |
@@ -58,7 +58,7 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | app | Application deployment unit of the service provider | |
 | description | Description | Provided by the applicant |
 | status | Subject status | For example, released or abandoned |
-| Compatibility | Compatibility rule | None, forward compatibility, backward compatibility, and full compatibility|
+| Compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
 | Coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
 | schema | Data format | Associated data format description. For details, see the following table. |
 
@@ -569,7 +569,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 
 
 
-#### 7.2. 6 Checking and Registering New Schemas
+#### 7.2. 6 Check and Register New Schemas
 
 If the same definition already exists, the current schema ID is returned.
 
@@ -666,7 +666,7 @@ POST /subjects/(string: subject)/
 | app | string | | Home app |
 | description | string | | description |
 | status | string | Required | Status |
-| compatibility | string | | Compatibility rule |
+| compatibility | string | | Compatibility setting |
 | coordinate | string | | Maven coordinate |
 
 - Response parameters
