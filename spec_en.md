@@ -1,8 +1,8 @@
-<H2> I. OpenSchema Specification Overview
+<H2> OpenSchema Specification
+
+## I. Abstract
 
 This specificition defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
-
-
 
 
 ## II. Compatibility Mode
@@ -40,7 +40,7 @@ The HTTP response of all requests is consistent with the HTTP standard. The deta
 "error_code": 422,
 "error_message": "schema info cannot be empty"
 }
-` ` `
+```
 
 
 
@@ -100,7 +100,7 @@ Example:
 }
 ]
 }
-` ` `
+```
 
 
 
@@ -150,7 +150,7 @@ For example, the following request is used to obtain the latest schema definitio
 
 ```sh
 curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
-` ` `
+```
 
 
 
