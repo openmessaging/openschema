@@ -185,7 +185,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
   404：
 
-  ​	40401 - 对应schema信息不存在
+  ​	40401 - schema信息不存在
 
   500： 
 
@@ -252,7 +252,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 
   404：
 
-  ​	40401 - 对应schema信息不存在
+  ​	40401 - schema信息不存在
 
   500： 
 
@@ -262,7 +262,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 
 ```shell
-curl -X GET http://localhost:8081/schemas/ids/1/versions
+curl -X GET http://localhost:8081/schemas/ids/1/subjects
 ```
 
 - 响应示例
@@ -348,7 +348,7 @@ curl -X GET http://localhost:8081/subjects
 
   404：
 
-  ​	40401 - 对应 openschema 信息不存在
+  ​	40401 - subject信息不存在
 
   500： 
 
@@ -370,7 +370,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 
  
 
-####  7.2.3 删除subject以及其对应的兼容性设置 
+####  7.2.3 删除subject以及其对应所有版本的schema
 
 - URL
 
@@ -398,7 +398,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 
   404：
 
-  ​	40401 - 对应 openschema 信息不存在
+  ​	40401 - subject信息不存在
 
   500： 
 
@@ -455,7 +455,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value
 
   404：
 
-  ​	40401 - 对应 openschema 信息不存在
+  ​	40401 - subject信息不存在
 
   500： 
 
@@ -511,6 +511,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 | coordinate    | string   | 坐标                   |
 | status        | string   | 状态                   |
 | description   | string   | 描述                   |
+| schema        | JSON     | schema的具体信息        |
+
 
 - 错误码
 
@@ -520,7 +522,7 @@ curl -X GET http://localhost:8081/subjects/test-value
 
   404：
 
-  ​	40401 - 对应 openschema 信息不存在
+  ​	40401 - subject信息不存在
 
   ​	40402 - version不存在
 
@@ -682,6 +684,10 @@ http://localhost:8081/subjects/test-value/versions --data '
 
   ​	40101 - 未授权错误
 
+  409：
+   
+   40901 - 兼容性错误
+
   422:
 
   ​	42201 - 格式错误
@@ -755,9 +761,13 @@ http://localhost:8081/subjects/test-value/ --data '
 
   404:
 
-  ​	40401 - subject不存在
+  ​	40401 - subject信息不存在
 
-  ​	40402- version不存在
+  ​	40402 - version信息不存在
+
+  409：
+   
+   40901 - 兼容性错误
 
   500： 
 
@@ -810,9 +820,9 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
   404:
 
-  ​	40401 - subject不存在
+  ​	40401 - subject信息不存在
 
-  ​	40402- version不存在
+  ​	40402 - version信息不存在
 
   422:格式错误
 
@@ -869,7 +879,7 @@ http://localhost:8081/compatibility/subjects/test-value/versions/latest
 
   404:
 
-  ​	40401 - subject不存在
+  ​	40401 - subject信息不存在
 
   500： 
 
@@ -920,7 +930,11 @@ http://localhost:8081/config/test-value
 
   404:
 
-  ​	40401 - subject不存在
+  ​	40401 - subject信息不存在
+
+  409：
+
+   40901 - 兼容性错误
 
   422:
 
