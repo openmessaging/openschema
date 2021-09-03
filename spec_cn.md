@@ -58,6 +58,7 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 | status        | 元数据状态               | 比如已发布、已废弃等            |
 | compatibility | 兼容性策略               | 无、向前兼容、向后兼容、全兼容  |
 | coordinate    | Maven坐标                | 消息Payload的JAR的Maven坐标     |
+| schemaType       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schema        | 数据格式                 | 关联的数据格式描述，详见下表    |
 
 ### 5.2 Schema定义 
@@ -70,7 +71,6 @@ Payload Schema用于描述消息的Payload数据。
 | id               | 全局唯一标识，用于确定该schema                               |                                                              |
 | comment          | payload注释说明                                              |                                                              |
 | serialization    | 序列化方式：hissian、json、pb、avro、user-defined            |                                                              |
-| schemaType       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schemaDefinition | schema具体的内容，以一种方式来描述数据格式                   | NONE：无 PB：给出PB描述文件 AVRO：给出AVRO Schema内容 USER-DEFINED：给出用户自定义的信息 基础内容类型：无 |
 | validator        | 值校验器                                                     | 对Schema描述的对象的值进行校验                               |
 | version          | schema的版本信息                                             | 以消息为例，Payload可能会变，这个时候需要版本来标识区别不同的Schema |
@@ -205,8 +205,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 {
 	"version": 1,
 	"id": "20",
-	"serialization": "PB",
-	"schemaType": "AVRO",
+	"serialization": "PB",	
 	"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
@@ -548,11 +547,11 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
+  "schemaType": "AVRO",
 	"schema": {
 		"version": 1,
 		"id": "20",
-		"serialization": "PB",
-		"schemaType": "AVRO",
+		"serialization": "PB",		
 		"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
@@ -620,8 +619,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/versions --data '
 {
-	"serialization": "PB",
-	"schemaType": "AVRO",
+	"serialization": "PB",	
 	"schemaDefinition": [{
 		"name": "id",
 		"type": "string"
