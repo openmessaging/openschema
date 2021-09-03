@@ -547,7 +547,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-  "schemaType": "AVRO",
+	"schemaType": "AVRO",
 	"schema": {
 		"version": 1,
 		"id": "20",
