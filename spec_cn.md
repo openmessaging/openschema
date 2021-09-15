@@ -58,7 +58,7 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 | status        | 元数据状态               | 比如已发布、已废弃等            |
 | compatibility | 兼容性策略               | 无、向前兼容、向后兼容、全兼容  |
 | coordinate    | Maven坐标                | 消息Payload的JAR的Maven坐标     |
-| schemaType       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
+| type       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schema        | 数据格式                 | 关联的数据格式描述，详见下表    |
 
 ### 5.2 Schema定义 
@@ -87,7 +87,7 @@ Payload Schema用于描述消息的Payload数据。
 	"compatibility": "NONE",
 	"validator": "a.groovy",
 	"comment": "Rocketmq user infomation",
-	"schemaType": "AVRO",
+	"type": "AVRO",
 	"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
@@ -547,7 +547,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-	"schemaType": "AVRO",
+	"type": "AVRO",
 	"schema": {
 		"version": 1,
 		"id": "20",
