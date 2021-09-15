@@ -60,7 +60,7 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | status | Subject status | For example, released or abandoned |
 | Compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
 | Coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
-| schemaType | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
+| type | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
 
 ### 5.2 Schema Definition
@@ -89,7 +89,7 @@ Example:
     "compatibility": "NONE",
     "validator": "a.groovy",
     "comment": "Rocketmq user infomation",
-    "schemaType": "AVRO",
+    "type": "AVRO",
     "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
@@ -545,7 +545,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
     "app": "rocketmq",
     "description": "rocketmq user information",    
     "compatibility": "NONE",
-    "schemaType": "AVRO",
+    "type": "AVRO",
     "schema": {
         "version": 1,
         "id": "20",
