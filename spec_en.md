@@ -60,6 +60,7 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | status | Subject status | For example, released or abandoned |
 | Compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
 | Coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
+| type | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
 
 ### 5.2 Schema Definition
@@ -72,7 +73,6 @@ The Payload Schema is used to describe the payload data of a message.
 | id | Globally unique identifier, which is used to identify the schema | |
 | comment | Payload comment | |
 | Serialization | Serialization mode: Hissian, JSON, PB, AVRO, and user-defined | |
-| schemaType | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schemaDefinition | Schema content, which is used to describe the data format. | NONE: none PB: PB description file AVRO: AVRO schema content USER-DEFINED: user-defined information Basic content type: none |
 | Validator | Object value validator | Validates the values of objects described in the schema.|
 | version | Schema version | For example, the payload may change. In this case, the version is required to identify different schemas. |
@@ -89,7 +89,7 @@ Example:
     "compatibility": "NONE",
     "validator": "a.groovy",
     "comment": "Rocketmq user infomation",
-    "schemaType": "AVRO",
+    "type": "AVRO",
     "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
@@ -207,8 +207,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 {
     "version": 1,
     "id": "20",
-    "serialization": "PB",
-    "schemaType": "AVRO",
+    "serialization": "PB",    
     "schemaDefinition": [{
             "name": "id",
             "type": "string"
@@ -544,13 +543,13 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
     "namespace": "org.apache.rocketmq",
     "tenant": "messaging/rocketmq",
     "app": "rocketmq",
-    "description": "rocketmq user information",
+    "description": "rocketmq user information",    
     "compatibility": "NONE",
+    "type": "AVRO",
     "schema": {
         "version": 1,
         "id": "20",
-        "serialization": "PB",
-        "schemaType": "AVRO",
+        "serialization": "PB",        
         "schemaDefinition": [
             {
                 "name": "id",
@@ -621,8 +620,7 @@ POST /subjects/(string: subject)/versions
 curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/versions --data'
 {
-    "serialization": "PB",
-    "schemaType": "AVRO",
+    "serialization": "PB",    
     "schemaDefinition": [
         {
             "name": "id",
