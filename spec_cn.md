@@ -51,14 +51,14 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 | 元信息        | 含义                     | 示例                            |
 | ------------- | ------------------------ | ------------------------------- |
 | tenant        | 租户                     | org/apache/rocketmq/mybank      |
-| namespace     | 命名空间                 | 集群名称, 如 rocketmq- cluster  |
+| namespace     | 命名空间                 | 集群名称, 如 rocketmq-cluster  |
 | subject       | 元数据的名称             | 比如使用Topic名称作为元数据名称 |
 | app           | 服务提供方的应用部署单元 |                                 |
 | description   | 描述信息                 | 由申请人提供                    |
 | status        | 元数据状态               | 比如已发布、已废弃等            |
 | compatibility | 兼容性策略               | 无、向前兼容、向后兼容、全兼容  |
 | coordinate    | Maven坐标                | 消息Payload的JAR的Maven坐标     |
-| type       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | 当消息都是没有提供Schema的，所以Schema类型都是NONE。 我们也可以给当前的消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
+| type       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | NONE 表示不提供Schema。也可以给当前消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schema        | 数据格式                 | 关联的数据格式描述，详见下表    |
 
 ### 5.2 Schema定义 
