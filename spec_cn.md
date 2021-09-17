@@ -89,8 +89,8 @@ Payload Schema用于描述消息的Payload数据。
 	"compatibility": "NONE",
 	"validator": "a.groovy",
 	"comment": "Rocketmq user infomation",
-  "createdtime": "2021-09-14T02:26:09.018",
-  "updatedtime": "2021-09-15T02:26:09.018",
+	"createdtime": "2021-09-14T02:26:09.018",
+	"updatedtime": "2021-09-15T02:26:09.018",
 	"format": "AVRO",
 	"schemaDefinition": [{
 			"name": "id",
@@ -484,8 +484,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 	"app": "rocketmq",
 	"description": "JSON",
 	"compatibility": "NONE",
-  "createdtime": "2021-09-14T02:26:09.018",
-  "updatedtime": "2021-09-15T02:26:09.018"
+	"createdtime": "2021-09-14T02:26:09.018",
+	"updatedtime": "2021-09-15T02:26:09.018"
 }
 ```
 
@@ -557,8 +557,8 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-  "createdtime": "2021-09-14T02:26:09.018",
-  "updatedtime": "2021-09-15T02:26:09.018",
+	"createdtime": "2021-09-14T02:26:09.018",
+	"updatedtime": "2021-09-15T02:26:09.018",
 	"format": "AVRO",
 	"schema": {
 		"version": 1,
@@ -739,8 +739,8 @@ http://localhost:8081/subjects/test-value/ --data '
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-  "createdtime": "2021-09-14T02:26:09.018",
-  "updatedtime": "2021-09-15T02:26:09.018",
+	"createdtime": "2021-09-14T02:26:09.018",
+	"updatedtime": "2021-09-15T02:26:09.018",
 	"status": "deprecated"
 }
 ```
