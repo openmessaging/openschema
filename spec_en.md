@@ -60,7 +60,9 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | status | Subject status | For example, released or abandoned |
 | Compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
 | Coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
-| type | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
+| createdtime    | the time when a subject was registered   |  2021-09-14T02:26:09.018    |
+| updatedtime    | the time when a subject was last updated     |  2021-09-15T02:26:09.018    |
+| format | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
 
 ### 5.2 Schema Definition
@@ -89,7 +91,9 @@ Example:
     "compatibility": "NONE",
     "validator": "a.groovy",
     "comment": "Rocketmq user infomation",
-    "type": "AVRO",
+    "createdtime": "2021-09-14T02:26:09.018",
+    "updatedtime": "2021-09-15T02:26:09.018",
+    "format": "AVRO",
     "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
@@ -447,6 +451,8 @@ GET /subjects/(string: subject)
 | coordinate | string | coordinate |
 | status | string | Status |
 | description | string | description |
+| createdtime    | string   |  the time when a subject was registered    |
+| updatedtime    | string     |  the time when a subject was last updated    |
 
 - Error code.
 
@@ -479,7 +485,9 @@ curl -X GET http://localhost:8081/subjects/test-value
     "tenant": "messaging/rocketmq",
     "app": "rocketmq",
     "description": "JSON",
-    "compatibility": "NONE"
+    "compatibility": "NONE",
+    "createdtime": "2021-09-14T02:26:09.018",
+    "updatedtime": "2021-09-15T02:26:09.018"
 }
 ```
 #### 7.2. 5 Obtaining Schema Definitions Based on Subject and Schema Version
@@ -509,6 +517,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 | coordinate | string | coordinate |
 | status | string | Status |
 | description | string | description |
+| createdtime    | string   |  the time when a subject was registered    |
+| updatedtime    | string     |  the time when a subject was last updated    |
 | schema | JSON | Refer to the schema definition |
 
 - Error code.
@@ -545,7 +555,9 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
     "app": "rocketmq",
     "description": "rocketmq user information",    
     "compatibility": "NONE",
-    "type": "AVRO",
+    "createdtime": "2021-09-14T02:26:09.018",
+    "updatedtime": "2021-09-15T02:26:09.018",
+    "format": "AVRO",
     "schema": {
         "version": 1,
         "id": "20",
@@ -679,6 +691,8 @@ POST /subjects/(string: subject)/
 | status | string | Status |
 | compatibility | string | Compatibility policy |
 | coordinate | string | Maven coordinate |
+| createdtime    | string   |  the time when a subject was registered    |
+| updatedtime    | string   |  the time when a subject was last updated    |
 
 - Error code.
 
@@ -725,6 +739,8 @@ http://localhost:8081/subjects/test-value/ --data'
     "app": "rocketmq",
     "description": "rocketmq user information",
     "compatibility": "NONE",
+    "createdtime": "2021-09-14T02:26:09.018",
+    "updatedtime": "2021-09-15T02:26:09.018",
     "status": "deprecated"
 }
 ```
