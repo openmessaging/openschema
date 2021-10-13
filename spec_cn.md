@@ -165,7 +165,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 - URL
 
 
-​	GET /schemas/ids/{string: id}
+​	GET /schemas/{string: id}
 
 - 请求参数
 
@@ -199,7 +199,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
 
 ```shell
-curl -X GET http://localhost:8081/schema/ids/1
+curl -X GET http://localhost:8081/schema/20
 ```
 
 - 响应示例
@@ -231,7 +231,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 - URL
 
 
-​	GET /schemas/ids/{string: id}/subjects
+​	GET /schemas/{string: id}/subjects
 
 - 请求参数
 
@@ -265,7 +265,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 
 ```shell
-curl -X GET http://localhost:8081/schemas/ids/1/subjects
+curl -X GET http://localhost:8081/schemas/20/subjects
 ```
 
 - 响应示例

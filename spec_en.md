@@ -167,7 +167,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 - URL
 
 
-GET /schemas/ids/{string: id}
+GET /schemas/{string: id}
 
 - Request parameters
 
@@ -201,7 +201,7 @@ GET /schemas/ids/{string: id}
 
 
 ```shell
-curl -X GET http://localhost:8081/schema/ids/1
+curl -X GET http://localhost:8081/schema/20
 ```
 
 - Response Example
@@ -233,7 +233,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 - URL
 
 
-​ GET /schemas/ids/{string: id}/subjects
+​ GET /schemas/{string: id}/subjects
 
 - Request parameters
 
@@ -267,7 +267,7 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 
 ```shell
-curl -X GET http://localhost:8081/schemas/ids/1/versions
+curl -X GET http://localhost:8081/schemas/20/versions
 ```
 
 - Response Example
