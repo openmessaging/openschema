@@ -1,9 +1,6 @@
-<H2>一、综述
+## 一、综述
 
 本篇提供了 OpenSchema 的相关元数据以及交互方式定义。
-
-
-
 
 ## 二、兼容性设计 
 
@@ -19,7 +16,7 @@
 
 
 
-##  三、Content-Types 
+##  三、Content Types 
 
 OpenSchema REST服务器通过使用http+json的方式进行通信。
 
@@ -29,7 +26,7 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 
 
 
-##  四、ErrorCode 
+##  四、Error Codes
 
 所有的请求的HTTP返回保持跟HTTP标准统一，其中细化的错误码由返回的json字符串来决定，格式：
 
@@ -63,6 +60,25 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 | format       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | NONE 表示不提供Schema。也可以给当前消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schema        | 数据格式                 | 关联的数据格式描述，详见下表    |
 
+示例：
+
+```json
+{
+    "tenant": "messaging/rocketmq",
+    "namespace": "org.apache.rocketmq",
+    "subject": "test-topic",
+    "app": "rocketmq",
+    "description": "rocketmq test subject",
+    "status": "released",
+    "compatibility": "NONE",
+    "coordinate": "maven-group:package:1.0.0",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
+    "format": "AVRO",
+    "schema": {}
+}
+```
+
 ### 5.2 Schema定义 
 
 Payload Schema用于描述消息的Payload数据。
@@ -81,26 +97,21 @@ Payload Schema用于描述消息的Payload数据。
 
 ```json
 {
-	"subject": "test-topic",
-	"namespace": "org.apache.rocketmq",
-	"tenant": "messaging/rocketmq",
-	"app": "rocketmq",
-	"description": "rocketmq user infomation",
-	"compatibility": "NONE",
-	"validator": "a.groovy",
-	"comment": "Rocketmq user infomation",
-	"createdTime": "2021-09-14T02:26:09.018",
-	"lastModifiedTime": "2021-09-15T02:26:09.018",
-	"format": "AVRO",
-	"schemaDefinition": [{
-			"name": "id",
-			"type": "string"
-		},
-		{
-			"name": "age",
-			"type": "short"
-		}
-	]
+  "name": "rocketmq-user-topic",
+  "id": "SLEd-3334-XSSFE-44983",
+  "comment": "Rocketmq user information",
+  "serialization": "",
+  "schemaDefinition": [{
+    "name": "id",
+    "type": "string"
+  },
+    {
+      "name": "age",
+      "type": "short"
+    }
+  ],
+  "validator": "a.groovy",
+  "version": 1
 }
 ```
 
@@ -179,7 +190,13 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
 | 参数名称 | 参数类型 | 是否必选 | 参数说明             |
 | -------- | -------- | -------- | -------------------- |
-| schema   | JSON     | 否       | 返回具体的schema定义 |
+| name | string | 否 | schema 名称 |
+| id | string | 是 | schema的唯一标识 |
+| comment | string | 否 | schema 描述|
+| serialization | string | 否 | schema 序列化信息: JSON, AVRO, etc |
+| schemaDefinition | json | 是 | schema 定义内容 |
+| validator | string | 否 | schema 数据校验 |
+| version | string | 是 | schema 版本 |
 
 - 错误码
 
@@ -284,7 +301,7 @@ curl -X GET http://localhost:8081/schemas/20/subject
 - URL
 
 
-​	GET /subjects
+GET /subjects
 
 - 请求参数
 
@@ -321,14 +338,81 @@ curl -X GET http://localhost:8081/subjects
 {"name": ["subject1", "subject2"] }
 ```
 
- 
 
-####  7.2.2 获取对应subject的所有版本 
+
+#### 7.2.2 获取subject定义
 
 - URL
 
 
-​	GET /subjects/(string: subject)/versions
+GET /subjects/(string: subject)
+
+- 请求参数
+
+| 参数名称 | 参数类型 | 是否必选 | 参数说明    |
+| -------- | -------- | -------- | ----------- |
+| subject  | string   | 必选     | subject名称 |
+
+- 响应参数
+
+
+| 参数名称      | 参数类型 | 参数说明               |
+| ------------- | -------- | ---------------------- |
+| subject       | string   | subject名称subject名称 |
+| namespace     | string   | 命名空间               |
+| tenant        | string   | 租户                   |
+| app           | string   | 所属应用               |
+| compatibility | string   | 兼容性设置             |
+| coordinate    | string   | 坐标                   |
+| status        | string   | 状态                   |
+| description   | string   | 描述                   |
+| createdTime    | string   | subject注册的时间      |
+| lastModifiedTime    | string   | subject最近更新的时间   |
+
+- 错误码
+
+  401：
+
+  40101 - 未授权错误
+
+  404：
+
+  40401 - subject信息不存在
+
+  500：
+
+  50001 - 存储服务错误
+
+- 请求示例
+
+
+```shell
+curl -X GET http://localhost:8081/subjects/test-value
+```
+
+- 响应示例
+
+
+```json
+{
+	"subject": "test-topic",
+	"namespace": "org.apache.rocketmq",
+	"tenant": "messaging/rocketmq",
+	"app": "rocketmq",
+	"description": "JSON",
+	"compatibility": "NONE",
+	"createdTime": "2021-09-14T02:26:09.018",
+	"lastModifiedTime": "2021-09-15T02:26:09.018"
+}
+```
+
+
+####  7.2.3 获取对应subject的所有版本 
+
+- URL
+
+
+GET /subjects/(string: subject)/versions
 
 - 请求参数
 
@@ -371,127 +455,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 { "version": [1, 2, 3, 4] }
 ```
 
- 
-
-####  7.2.3 删除subject以及其对应所有版本的schema
-
-- URL
-
-
-​	DELETE /subjects/(string: subject)
-
-- 请求参数
-
-| 参数名称 | 参数类型 | 是否必选 | 参数说明    |
-| -------- | -------- | -------- | ----------- |
-| subject  | string   | 必选     | subject名称 |
-
-- 响应参数
-
-
-| 参数名称 | 参数类型 | 参数说明 |
-| -------- | -------- | -------- |
-| version  | int      | 版本号   |
-
-- 错误码
-
-  401：
-
-  ​	40101 - 未授权错误
-
-  404：
-
-  ​	40401 - subject信息不存在
-
-  500： 
-
-  ​	50001 - 存储服务错误
-
-- 请求示例
-
-
-```shell
-curl -X DELETE http://localhost:8081/subjects/test-value
-```
-
-- 响应示例
-
-
-```json
-{ "version": [1, 2, 3, 4] }
-```
-
- 
-
-#### 7.2.4 获取subject定义 
-
-- URL
-
-
-​	GET /subjects/(string: subject)
-
-- 请求参数
-
-| 参数名称 | 参数类型 | 是否必选 | 参数说明    |
-| -------- | -------- | -------- | ----------- |
-| subject  | string   | 必选     | subject名称 |
-
-- 响应参数
-
-
-| 参数名称      | 参数类型 | 参数说明               |
-| ------------- | -------- | ---------------------- |
-| subject       | string   | subject名称subject名称 |
-| namespace     | string   | 命名空间               |
-| tenant        | string   | 租户                   |
-| app           | string   | 所属应用               |
-| compatibility | string   | 兼容性设置             |
-| coordinate    | string   | 坐标                   |
-| status        | string   | 状态                   |
-| description   | string   | 描述                   |
-| createdTime    | string   | subject注册的时间      |
-| lastModifiedTime    | string   | subject最近更新的时间   |
-
-- 错误码
-
-  401：
-
-  ​	40101 - 未授权错误
-
-  404：
-
-  ​	40401 - subject信息不存在
-
-  500： 
-
-  ​	50001 - 存储服务错误
-
-- 请求示例
-
-
-```shell
-curl -X GET http://localhost:8081/subjects/test-value
-```
-
-- 响应示例
-
-
-```json
-{
-	"subject": "test-topic",
-	"namespace": "org.apache.rocketmq",
-	"tenant": "messaging/rocketmq",
-	"app": "rocketmq",
-	"description": "JSON",
-	"compatibility": "NONE",
-	"createdTime": "2021-09-14T02:26:09.018",
-	"lastModifiedTime": "2021-09-15T02:26:09.018"
-}
-```
-
-
-
-####  7.2.5 根据subject以及schema版本获取schema定义 
+####  7.2.4 根据subject以及schema版本获取schema定义
 
 - URL
 
@@ -535,7 +499,7 @@ curl -X GET http://localhost:8081/subjects/test-value
 
   ​	40402 - version不存在
 
-  500： 
+  500：
 
   ​	50001 - 存储服务错误
 
@@ -577,81 +541,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 }
 ```
 
-
-
-####  7.2.6 检查、注册Schema 
-
-如果已有相同定义，则直接返回原有的id。
-
-如果无相同定义，则检查兼容性设置，创建新的schema，返回新的id。
-
-- URL
-
-
-​	POST /subjects/(string: subject)/versions
-
-- 请求参数
-
-| 参数名称 | 参数类型 | 是否必选 | 参数说明       |
-| -------- | -------- | -------- | -------------- |
-| subject  | string   | 必选     | subject名称    |
-| schema   | Json     | 必选     | 参考schema定义 |
-
-- 响应参数
-
-
-| 参数名称 | 参数类型 | 参数说明  |
-| -------- | -------- | --------- |
-| id       | string   | schema ID |
-
-- 错误码
-
-  401：
-
-  ​	40101 - 未授权错误
-
-  409:
-
-  ​	40901 - 兼容性错误
-
-  422:
-
-  ​	42201 - 格式错误
-
-  500： 
-
-  ​	50001 - 存储服务错误
-
-  ​	50002 - 超时
-
-- 请求示例
-
-
-```shell
-curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
-http://localhost:8081/subjects/test-value/versions --data '
-{
-	"serialization": "PB",	
-	"schemaDefinition": [{
-		"name": "id",
-		"type": "string"
-	}, {
-		"name": "amount",
-		"type": "double"
-	}]
-}'
-```
-
-- 响应示例
-
-
-```json
-{"id":"10"}
-```
-
-
-
-####  7.2.7 新增、修改subject 
+####  7.2.5 新增、修改subject
 
 如果不存在相关的subject，则新增subject。
 
@@ -697,14 +587,14 @@ http://localhost:8081/subjects/test-value/versions --data '
   ​	40101 - 未授权错误
 
   409：
-   
-   40901 - 兼容性错误
+
+  40901 - 兼容性错误
 
   422:
 
   ​	42201 - 格式错误
 
-  500： 
+  500：
 
   ​	50001 - 存储服务错误
 
@@ -745,7 +635,123 @@ http://localhost:8081/subjects/test-value/ --data '
 }
 ```
 
+####  7.2.6 新增，注册Schema
 
+如果已有相同定义，则直接返回原有的id。
+
+如果无相同定义，则检查兼容性设置，创建新的schema，返回新的id。
+
+- URL
+
+
+​	POST /subjects/(string: subject)/versions
+
+- 请求参数
+
+| 参数名称 | 参数类型 | 是否必选 | 参数说明       |
+| -------- | -------- | -------- | -------------- |
+| subject  | string   | 必选     | subject名称    |
+| schema   | Json     | 必选     | 参考schema定义 |
+
+- 响应参数
+
+
+| 参数名称 | 参数类型 | 参数说明  |
+| -------- | -------- | --------- |
+| id       | string   | schema ID |
+
+- 错误码
+
+  401：
+
+  ​	40101 - 未授权错误
+
+  409:
+
+  ​	40901 - 兼容性错误
+
+  422:
+
+  ​	42201 - 格式错误
+
+  500：
+
+  ​	50001 - 存储服务错误
+
+  ​	50002 - 超时
+
+- 请求示例
+
+
+```shell
+curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
+http://localhost:8081/subjects/test-value/versions --data '
+{
+	"serialization": "PB",	
+	"schemaDefinition": [{
+		"name": "id",
+		"type": "string"
+	}, {
+		"name": "amount",
+		"type": "double"
+	}]
+}'
+```
+
+- 响应示例
+
+
+```json
+{"id":"10"}
+```
+
+####  7.2.7 删除subject以及其对应所有版本的schema
+
+- URL
+
+
+DELETE /subjects/(string: subject)
+
+- 请求参数
+
+| 参数名称 | 参数类型 | 是否必选 | 参数说明    |
+| -------- | -------- | -------- | ----------- |
+| subject  | string   | 必选     | subject名称 |
+
+- 响应参数
+
+
+| 参数名称 | 参数类型 | 参数说明 |
+| -------- | -------- | -------- |
+| version  | int      | 版本号   |
+
+- 错误码
+
+  401：
+
+  ​	40101 - 未授权错误
+
+  404：
+
+  ​	40401 - subject信息不存在
+
+  500： 
+
+  ​	50001 - 存储服务错误
+
+- 请求示例
+
+
+```shell
+curl -X DELETE http://localhost:8081/subjects/test-value
+```
+
+- 响应示例
+
+
+```json
+{ "version": [1, 2, 3, 4] }
+```
 
 ####  7.2.8 删除指定subject指定版本的schema 
 
@@ -771,13 +777,13 @@ http://localhost:8081/subjects/test-value/ --data '
 
   401：
 
-  ​	40101 - 未授权错误
+  40101 - 未授权错误
 
   404:
 
-  ​	40401 - subject信息不存在
+  40401 - subject信息不存在
 
-  ​	40402 - version信息不存在
+  40402 - version信息不存在
 
   409：
    
@@ -785,7 +791,7 @@ http://localhost:8081/subjects/test-value/ --data '
 
   500： 
 
-  ​	50001 - 存储服务错误
+  50001 - 存储服务错误
 
 - 请求示例
 
