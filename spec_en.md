@@ -490,7 +490,7 @@ curl -X GET http://localhost:8081/subjects/test-value
     "lastModifiedTime": "2021-09-15T02:26:09.018"
 }
 ```
-#### 7.2. 5 Obtaining Schema Definitions Based on Subject and Schema Version
+#### 7.2.5 Obtaining Schema Definitions Based on Subject and Schema Version
 
 - URL
 
@@ -655,7 +655,7 @@ http://localhost:8081/subjects/test-value/versions --data'
 
 
 
-#### 7.2. 7 Create or Modify a Subject
+#### 7.2.7 Create or Modify a Subject
 
 If the same subject does not exist, create a subject.
 
@@ -724,8 +724,7 @@ http://localhost:8081/subjects/test-value/ --data'
     "description": "rocketmq user information",
     "compatibility": "NONE",
     "status": "deprecated"
-}
-'
+}'
 ```
 
 - Response Example
@@ -747,7 +746,7 @@ http://localhost:8081/subjects/test-value/ --data'
 
 
 
-#### 7.2. 8 Delete a Specific Schema Version of a Subject
+#### 7.2.8 Delete a Specific Schema Version of a Subject
 
 - URL
 
@@ -801,7 +800,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 ### 7.3 Compatibility-Related API Interfaces
 
-#### 7.3. 1 Testing if new schema is compatible against Compatibility Setting of this Subject
+#### 7.3.1 Testing if new schema is compatible against Compatibility Setting of this Subject
 
 - URL
 
@@ -862,7 +861,7 @@ http://localhost:8081/compatibility/subjects/test-value/versions/latest
 
 
 
-#### 7.3. 2 Obtaining Compatibility Setting
+#### 7.3.2 Obtaining Compatibility Setting
 
 - URL
 
