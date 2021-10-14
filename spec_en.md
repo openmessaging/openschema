@@ -1,9 +1,23 @@
 # OpenSchema Specification
- 
+
+
 ## 1. Abstract
 
 This specification defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
 
+## Table of Contents
+
+- [Compatibility Mode](#compatibility-mode)
+- [Content Types](#3-content-types)
+- [Error Codes](#4-error-codes)
+- [Schema Format](#5-schema-format)
+  - [Metadata Information](#51-metadata-information)
+  - [Schema Definition](#52-schema-definition)
+- [Relationship Between Subjects, Topics and Schemas](#6-relationship-between-subjects-topics-and-schemas)
+- [REST Interface Definition](#7-rest-interface-definition)
+  - [Schema related APIs](#71-schema-related-apis)
+  - [Subject related APIs](#72-subject-related-apis)
+  - [Compatibility related APIs](#73-compatibility-related-apis)
 
 ## 2. Compatibility Mode
 
@@ -21,7 +35,7 @@ The compatibility mode defines the compatibility rules concerning which changes 
 
 
 
-## 3. Content-Types
+## 3. Content Types
 
 The OpenSchema REST service communicates using HTTP+JSON.
 
@@ -31,7 +45,7 @@ The request should specify the most specific format and version information via 
 
 
 
-## 4. ErrorCode
+## 4. Error Codes
 
 The HTTP response of all requests is consistent with the HTTP standard. The detailed error code is determined by the returned JSON response. The format is as follows:
 
@@ -48,9 +62,9 @@ The HTTP response of all requests is consistent with the HTTP standard. The deta
 
 ### 5.1 Metadata Information
 
-The following Metadata-information describes Subject definition in OpenSchema specification.
+The following metadata information describes Subject definition in OpenSchema specification.
 
-|MetaInfo|Meaning|Example|
+|Parameter Name|Description|Example|
 | ------------- | ------------------------ | ------------------------------- |
 | tenant | Tenant | org/apache/rocketmq/mybank |
 | namespace | Namespace | Cluster name, for example, rocketmq-cluster |
@@ -65,11 +79,30 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | format | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
 
+Example:
+
+```json
+{
+    "tenant": "messaging/rocketmq",
+    "namespace": "org.apache.rocketmq",
+    "subject": "test-topic",
+    "app": "rocketmq",
+    "description": "rocketmq test subject",
+    "status": "released",
+    "compatibility": "NONE",
+    "coordinate": "maven-group:package:1.0.0",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
+    "format": "AVRO",
+    "schema": {}
+}
+```
+
 ### 5.2 Schema Definition
 
 The Payload Schema is used to describe the payload data of a message.
 
-|MetaInfo|Meaning|Instance|
+|Parameter Name|Description|Example|
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | name | Payload name, which can be null. For example, the payload of a message does not need a name. | |
 | id | Globally unique identifier, which is used to identify the schema | |
@@ -83,17 +116,10 @@ Example:
 
 ```json
 {
-    "subject": "test-topic",
-    "namespace": "org.apache.rocketmq",
-    "tenant": "messaging/rocketmq",
-    "app": "rocketmq",
-    "description": "rocketmq user infomation",
-    "compatibility": "NONE",
-    "validator": "a.groovy",
-    "comment": "Rocketmq user infomation",
-    "createdTime": "2021-09-14T02:26:09.018",
-    "lastModifiedTime": "2021-09-15T02:26:09.018",
-    "format": "AVRO",
+    "name": "rocketmq-user-topic",
+    "id": "SLEd-3334-XSSFE-44983",
+    "comment": "Rocketmq user information",
+    "serialization": "",
     "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
@@ -102,17 +128,19 @@ Example:
                 "name": "age",
                 "type": "short"
         }
-    ]
+    ],
+   "validator": "a.groovy",
+   "version": 1
 }
 ```
 
 
 
-## 6. Correlation Between Subjects and Topics
+## 6. Relationship Between Subjects, Topics and Schemas
 
 ### 6.1 Relationship Between Subjects and Topics
 
-- Messageing system
+- Messaging system
 
 
 Subject Name by default, the value is a topic name, which defines the format of the message body. The value can be extended by suffix ${topic}-${suffix}. For example, in Kafka, Kafka-Key is generally used to define the data format of the key in Kafka messages.
@@ -160,7 +188,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
 
 
-### 7.1 Schema-related APIs
+### 7.1 Schema related APIs
 
 #### 7.1.1 Obtaining Schema Details by ID
 
@@ -228,7 +256,7 @@ curl -X GET http://localhost:8081/schema/20
 
 
 
-#### 7.1. 2 Obtaining the Subject name and Version Number Based on the ID
+#### 7.1.2 Obtaining the Subject name and Version Number Based on the ID
 
 - URL
 
@@ -279,7 +307,7 @@ curl -X GET http://localhost:8081/schemas/20/versions
 
 
 
-### 7.2 Subject-related API Interfaces
+### 7.2 Subject related APIs
 
 #### 7.2.1 Obtaining All Subjects
 
@@ -798,7 +826,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 
 
-### 7.3 Compatibility-Related API Interfaces
+### 7.3 Compatibility related APIs
 
 #### 7.3.1 Testing if new schema is compatible against Compatibility Setting of this Subject
 
