@@ -35,8 +35,8 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 
 ```json
 {
-	"error_code": 422,
-	"error_message": "schema info cannot be empty"
+	"errorCode": 422,
+	"errorMessage": "schema info cannot be empty"
 }
 ```
 
@@ -58,8 +58,8 @@ OpenSchema REST服务器通过使用http+json的方式进行通信。
 | status        | 元数据状态               | 比如已发布、已废弃等            |
 | compatibility | 兼容性策略               | 无、向前兼容、向后兼容、全兼容  |
 | coordinate    | Maven坐标                | 消息Payload的JAR的Maven坐标     |
-| created_time  | subject注册的时间         |  比如2021-09-14T02:26:09.018    |
-| updated_time  | subject最近更新的时间      |  比如2021-09-15T02:26:09.018    |
+| createdTime  | subject注册的时间         |  比如2021-09-14T02:26:09.018    |
+| lastModifiedTime  | subject最近更新的时间      |  比如2021-09-15T02:26:09.018    |
 | format       | schema类型的枚举：NONE、JSON、PB、AVRO、USER-DEFINED、Int、Long、String、Map | NONE 表示不提供Schema。也可以给当前消息加上Schema，比如用PB来描述RocketMQ 传输的数据的格式 |
 | schema        | 数据格式                 | 关联的数据格式描述，详见下表    |
 
@@ -73,7 +73,7 @@ Payload Schema用于描述消息的Payload数据。
 | id               | 全局唯一标识，用于确定该schema                               |                                                              |
 | comment          | payload注释说明                                              |                                                              |
 | serialization    | 序列化方式：hissian、json、pb、avro、user-defined            |                                                              |
-| schema_definition | schema具体的内容，以一种方式来描述数据格式                   | NONE：无 PB：给出PB描述文件 AVRO：给出AVRO Schema内容 USER-DEFINED：给出用户自定义的信息 基础内容类型：无 |
+| schemaDefinition | schema具体的内容，以一种方式来描述数据格式                   | NONE：无 PB：给出PB描述文件 AVRO：给出AVRO Schema内容 USER-DEFINED：给出用户自定义的信息 基础内容类型：无 |
 | validator        | 值校验器                                                     | 对Schema描述的对象的值进行校验                               |
 | version          | schema的版本信息                                             | 以消息为例，Payload可能会变，这个时候需要版本来标识区别不同的Schema |
 
@@ -89,10 +89,10 @@ Payload Schema用于描述消息的Payload数据。
 	"compatibility": "NONE",
 	"validator": "a.groovy",
 	"comment": "Rocketmq user infomation",
-	"created_time": "2021-09-14T02:26:09.018",
-	"updated_time": "2021-09-15T02:26:09.018",
+	"createdTime": "2021-09-14T02:26:09.018",
+	"lastModifiedTime": "2021-09-15T02:26:09.018",
 	"format": "AVRO",
-	"schema_definition": [{
+	"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
 		},
@@ -141,8 +141,8 @@ Subject名称默认对于Topic名称，用于定义消息体的格式。可以�
 | ------------ | ------------- | -------- | -------- | -------- |
 | 请求公共参数 | tenant        | string   | 非必选   | 租户     |
 |              | namespace     | string   | 非必选   | 命名空间 |
-| 返回公共参数 | error_code    | int      | 必选     | 错误码   |
-|              | error_message | string   | 必选     | 错误解释 |
+| 返回公共参数 | errorCode    | int      | 必选     | 错误码   |
+|              | errorMessage | string   | 必选     | 错误解释 |
 
 - **版本规则**
 
@@ -210,7 +210,7 @@ curl -X GET http://localhost:8081/schema/20
 	"version": 1,
 	"id": "20",
 	"serialization": "PB",	
-	"schema_definition": [{
+	"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
 		},
@@ -231,7 +231,7 @@ curl -X GET http://localhost:8081/schema/20
 - URL
 
 
-​	GET /schemas/{string: id}/subjects
+​	GET /schemas/{string: id}/subject
 
 - 请求参数
 
@@ -265,14 +265,14 @@ curl -X GET http://localhost:8081/schema/20
 
 
 ```shell
-curl -X GET http://localhost:8081/schemas/20/subjects
+curl -X GET http://localhost:8081/schemas/20/subject
 ```
 
 - 响应示例
 
 
 ```json
-[{"subject":"test-topic","version":1}]
+{"subject":"test-topic","version":1}
 ```
 
  
@@ -318,7 +318,7 @@ curl -X GET http://localhost:8081/subjects
 
 
 ```json
-["subject1", "subject2"]
+{"name": ["subject1", "subject2"] }
 ```
 
  
@@ -368,7 +368,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 
 
 ```json
-[ 1, 2, 3, 4]
+{ "version": [1, 2, 3, 4] }
 ```
 
  
@@ -418,7 +418,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value
 
 
 ```json
-[ 1, 2, 3, 4]
+{ "version": [1, 2, 3, 4] }
 ```
 
  
@@ -449,8 +449,8 @@ curl -X DELETE http://localhost:8081/subjects/test-value
 | coordinate    | string   | 坐标                   |
 | status        | string   | 状态                   |
 | description   | string   | 描述                   |
-| created_time    | string   | subject注册的时间      |
-| updated_time    | string   | subject最近更新的时间   |
+| createdTime    | string   | subject注册的时间      |
+| lastModifiedTime    | string   | subject最近更新的时间   |
 
 - 错误码
 
@@ -484,8 +484,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 	"app": "rocketmq",
 	"description": "JSON",
 	"compatibility": "NONE",
-	"created_time": "2021-09-14T02:26:09.018",
-	"updated_time": "2021-09-15T02:26:09.018"
+	"createdTime": "2021-09-14T02:26:09.018",
+	"lastModifiedTime": "2021-09-15T02:26:09.018"
 }
 ```
 
@@ -518,8 +518,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 | coordinate    | string   | 坐标                   |
 | status        | string   | 状态                   |
 | description   | string   | 描述                   |
-| created_time    | string   | subject注册的时间      |
-| updated_time    | string   | subject最近更新的时间   |
+| createdTime    | string   | subject注册的时间      |
+| lastModifiedTime    | string   | subject最近更新的时间   |
 | schema        | JSON     | schema的具体信息        |
 
 
@@ -557,14 +557,14 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-	"created_time": "2021-09-14T02:26:09.018",
-	"updated_time": "2021-09-15T02:26:09.018",
+	"createdTime": "2021-09-14T02:26:09.018",
+	"lastModifiedTime": "2021-09-15T02:26:09.018",
 	"format": "AVRO",
 	"schema": {
 		"version": 1,
 		"id": "20",
 		"serialization": "PB",		
-		"schema_definition": [{
+		"schemaDefinition": [{
 			"name": "id",
 			"type": "string"
 		}, {
@@ -632,7 +632,7 @@ curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/versions --data '
 {
 	"serialization": "PB",	
-	"schema_definition": [{
+	"schemaDefinition": [{
 		"name": "id",
 		"type": "string"
 	}, {
@@ -646,7 +646,7 @@ http://localhost:8081/subjects/test-value/versions --data '
 
 
 ```json
-{id":"10"}
+{"id":"10"}
 ```
 
 
@@ -687,8 +687,8 @@ http://localhost:8081/subjects/test-value/versions --data '
 | status        | string   | 状态        |
 | compatibility | string   | 兼容性策略  |
 | coordinate    | string   | Maven坐标   |
-| created_time    | string   | subject注册的时间  |
-| updated_time    | string   | subject最近更新的时间  |
+| createdTime    | string   | subject注册的时间  |
+| lastModifiedTime    | string   | subject最近更新的时间  |
 
 - 错误码
 
@@ -739,8 +739,8 @@ http://localhost:8081/subjects/test-value/ --data '
 	"app": "rocketmq",
 	"description": "rocketmq user information",
 	"compatibility": "NONE",
-	"created_time": "2021-09-14T02:26:09.018",
-	"updated_time": "2021-09-15T02:26:09.018",
+	"createdTime": "2021-09-14T02:26:09.018",
+	"lastModifiedTime": "2021-09-15T02:26:09.018",
 	"status": "deprecated"
 }
 ```
@@ -798,7 +798,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 
 ```json
-1
+{ "version": 1 }
 ```
 
 
@@ -824,7 +824,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 | 参数名称      | 参数类型 | 参数说明 |
 | ------------- | -------- | -------- |
-| is_compatible | boolean  | 是否兼容 |
+| isCompatible | boolean  | 是否兼容 |
 
 - 错误码
 
@@ -861,7 +861,7 @@ http://localhost:8081/compatibility/subjects/test-value/versions/latest
 
 
 ```json
-{"is_compatible": true}
+{"isCompatible": true}
 ```
 
 

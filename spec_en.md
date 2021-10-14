@@ -37,8 +37,8 @@ The HTTP response of all requests is consistent with the HTTP standard. The deta
 
 ```json
 {
-    "error_code": 422,
-    "error_message": "schema info cannot be empty"
+    "errorCode": 422,
+    "errorMessage": "schema info cannot be empty"
 }
 ```
 
@@ -60,8 +60,8 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | status | Subject status | For example, released or abandoned |
 | compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
 | coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
-| created_time    | the time when a subject was registered   |  2021-09-14T02:26:09.018    |
-| updated_time    | the time when a subject was last updated     |  2021-09-15T02:26:09.018    |
+| createdTime    | the time when a subject was registered   |  2021-09-14T02:26:09.018    |
+| lastModifiedTime    | the time when a subject was last updated     |  2021-09-15T02:26:09.018    |
 | format | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
 
@@ -75,7 +75,7 @@ The Payload Schema is used to describe the payload data of a message.
 | id | Globally unique identifier, which is used to identify the schema | |
 | comment | Payload comment | |
 | serialization | Serialization mode: Hissian, JSON, PB, AVRO, and user-defined | |
-| schema_definition | Schema content, which is used to describe the data format. | NONE: none PB: PB description file AVRO: AVRO schema content USER-DEFINED: user-defined information Basic content type: none |
+| schemaDefinition | Schema content, which is used to describe the data format. | NONE: none PB: PB description file AVRO: AVRO schema content USER-DEFINED: user-defined information Basic content type: none |
 | validator | Object value validator | Validates the values of objects described in the schema.|
 | version | Schema version | For example, the payload may change. In this case, the version is required to identify different schemas. |
 
@@ -91,10 +91,10 @@ Example:
     "compatibility": "NONE",
     "validator": "a.groovy",
     "comment": "Rocketmq user infomation",
-    "created_time": "2021-09-14T02:26:09.018",
-    "updated_time": "2021-09-15T02:26:09.018",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
     "format": "AVRO",
-    "schema_definition": [{
+    "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
             },
@@ -143,8 +143,8 @@ Subject Name can be defined and customized according to other system's requireme
 | ------------ | ------------- | -------- | -------- | -------- |
 | Common request parameter | tenant | string | Optional | Tenant |
 | | namespace | string | Optional | Namespace |
-| Common Response parameter | error_code | int | Required | Error code |
-| | error_message | string | Required | Error message |
+| Common Response parameter | errorCode | int | Required | Error code |
+| | errorMessage | string | Required | Error message |
 
 - **Version Rules**
 
@@ -162,7 +162,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
 ### 7.1 Schema-related APIs
 
-#### 7.1. 1 Obtaining Schema Details by ID
+#### 7.1.1 Obtaining Schema Details by ID
 
 - URL
 
@@ -212,7 +212,7 @@ curl -X GET http://localhost:8081/schema/20
     "version": 1,
     "id": "20",
     "serialization": "PB",    
-    "schema_definition": [{
+    "schemaDefinition": [{
             "name": "id",
             "type": "string"
         },
@@ -233,7 +233,7 @@ curl -X GET http://localhost:8081/schema/20
 - URL
 
 
-​ GET /schemas/{string: id}/subjects
+​ GET /schemas/{string: id}/subject
 
 - Request parameters
 
@@ -274,14 +274,14 @@ curl -X GET http://localhost:8081/schemas/20/versions
 
 
 ```json
-[{"subject":"test-topic","version":1}]
+{"subject":"test-topic","version":1}
 ```
 
 
 
 ### 7.2 Subject-related API Interfaces
 
-#### 7.2. 1 Obtaining All Subjects
+#### 7.2.1 Obtaining All Subjects
 
 - URL
 
@@ -320,12 +320,12 @@ curl -X GET http://localhost:8081/subjects
 
 
 ```json
-["subject1", "subject2"]
+{ "name": ["subject1", "subject2"] }
 ```
 
 
 
-#### 7.2. 2 Obtaining All Versions of a Subject
+#### 7.2.2 Obtaining All Versions of a Subject
 
 - URL
 
@@ -370,12 +370,12 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 
 
 ```json
-[1, 2, 3, 4]
+{ "version": [1, 2, 3, 4] }
 ```
 
 
 
-#### 7.2. 3 Delete the subject, compatibility settings along with all versions of schemas belong to this subject.
+#### 7.2.3 Delete the subject, compatibility settings along with all versions of schemas belong to this subject.
 
 - URL
 
@@ -420,12 +420,12 @@ curl -X DELETE http://localhost:8081/subjects/test-value
 
 
 ```json
-[1, 2, 3, 4]
+{ "version": [1, 2, 3, 4] }
 ```
 
 
 
-#### 7.2. 4 Obtaining Subject Definitions
+#### 7.2.4 Obtaining Subject Definitions
 
 - URL
 
@@ -451,8 +451,8 @@ GET /subjects/(string: subject)
 | coordinate | string | coordinate |
 | status | string | Status |
 | description | string | description |
-| created_time    | string   |  the time when a subject was registered    |
-| updated_time    | string     |  the time when a subject was last updated    |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string     |  the time when a subject was last updated    |
 
 - Error code.
 
@@ -486,8 +486,8 @@ curl -X GET http://localhost:8081/subjects/test-value
     "app": "rocketmq",
     "description": "JSON",
     "compatibility": "NONE",
-    "created_time": "2021-09-14T02:26:09.018",
-    "updated_time": "2021-09-15T02:26:09.018"
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018"
 }
 ```
 #### 7.2. 5 Obtaining Schema Definitions Based on Subject and Schema Version
@@ -517,8 +517,8 @@ curl -X GET http://localhost:8081/subjects/test-value
 | coordinate | string | coordinate |
 | status | string | Status |
 | description | string | description |
-| created_time    | string   |  the time when a subject was registered    |
-| updated_time    | string     |  the time when a subject was last updated    |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string     |  the time when a subject was last updated    |
 | schema | JSON | Refer to the schema definition |
 
 - Error code.
@@ -555,14 +555,14 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
     "app": "rocketmq",
     "description": "rocketmq user information",    
     "compatibility": "NONE",
-    "created_time": "2021-09-14T02:26:09.018",
-    "updated_time": "2021-09-15T02:26:09.018",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
     "format": "AVRO",
     "schema": {
         "version": 1,
         "id": "20",
         "serialization": "PB",        
-        "schema_definition": [
+        "schemaDefinition": [
             {
                 "name": "id",
                 "type": "string"
@@ -580,7 +580,7 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 
 
 
-#### 7.2. 6 Check and Register New Schemas
+#### 7.2.6 Check and Register New Schemas
 
 If the same definition already exists, the current schema ID is returned.
 
@@ -633,7 +633,7 @@ curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
 http://localhost:8081/subjects/test-value/versions --data'
 {
     "serialization": "PB",    
-    "schema_definition": [
+    "schemaDefinition": [
         {
             "name": "id",
             "type": "string"
@@ -650,7 +650,7 @@ http://localhost:8081/subjects/test-value/versions --data'
 
 
 ```json
-{id":"10"}
+{"id":"10"}
 ```
 
 
@@ -691,8 +691,8 @@ POST /subjects/(string: subject)/
 | status | string | Status |
 | compatibility | string | Compatibility policy |
 | coordinate | string | Maven coordinate |
-| created_time    | string   |  the time when a subject was registered    |
-| updated_time    | string   |  the time when a subject was last updated    |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string   |  the time when a subject was last updated    |
 
 - Error code.
 
@@ -739,8 +739,8 @@ http://localhost:8081/subjects/test-value/ --data'
     "app": "rocketmq",
     "description": "rocketmq user information",
     "compatibility": "NONE",
-    "created_time": "2021-09-14T02:26:09.018",
-    "updated_time": "2021-09-15T02:26:09.018",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
     "status": "deprecated"
 }
 ```
@@ -794,7 +794,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 
 ```json
-1
+{ "version": 1 }
 ```
 
 
@@ -820,7 +820,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 | Parameter Name| Parameter Type| Parameter Description|
 | ------------- | -------- | -------- |
-| is_compatible | boolean | Compatible |
+| isCompatible | boolean | Compatible |
 
 - Error code.
 
@@ -857,7 +857,7 @@ http://localhost:8081/compatibility/subjects/test-value/versions/latest
 
 
 ```json
-{"is_compatible": true}
+{"isCompatible": true}
 ```
 
 
