@@ -1,9 +1,23 @@
 # OpenSchema Specification
- 
+
+
 ## 1. Abstract
 
 This specification defines a vendor-neutral OpenSchema metadata and interaction modes, targeting the data schema domain.
 
+## Table of Contents
+
+- [Compatibility Mode](#compatibility-mode)
+- [Content Types](#3-content-types)
+- [Error Codes](#4-error-codes)
+- [Schema Format](#5-schema-format)
+  - [Metadata Information](#51-metadata-information)
+  - [Schema Definition](#52-schema-definition)
+- [Relationship Between Subjects, Topics and Schemas](#6-relationship-between-subjects-topics-and-schemas)
+- [REST Interface Definition](#7-rest-interface-definition)
+  - [Schema related APIs](#71-schema-related-apis)
+  - [Subject related APIs](#72-subject-related-apis)
+  - [Compatibility related APIs](#73-compatibility-related-apis)
 
 ## 2. Compatibility Mode
 
@@ -21,7 +35,7 @@ The compatibility mode defines the compatibility rules concerning which changes 
 
 
 
-## 3. Content-Types
+## 3. Content Types
 
 The OpenSchema REST service communicates using HTTP+JSON.
 
@@ -31,14 +45,14 @@ The request should specify the most specific format and version information via 
 
 
 
-## 4. ErrorCode
+## 4. Error Codes
 
 The HTTP response of all requests is consistent with the HTTP standard. The detailed error code is determined by the returned JSON response. The format is as follows:
 
 ```json
 {
-    "error_code": 422,
-    "error_message": "schema info cannot be empty"
+    "errorCode": 422,
+    "errorMessage": "schema info cannot be empty"
 }
 ```
 
@@ -48,9 +62,9 @@ The HTTP response of all requests is consistent with the HTTP standard. The deta
 
 ### 5.1 Metadata Information
 
-The following Metadata-information describes Subject definition in OpenSchema specification.
+The following metadata information describes Subject definition in OpenSchema specification.
 
-|MetaInfo|Meaning|Example|
+|Parameter Name|Description|Example|
 | ------------- | ------------------------ | ------------------------------- |
 | tenant | Tenant | org/apache/rocketmq/mybank |
 | namespace | Namespace | Cluster name, for example, rocketmq-cluster |
@@ -58,42 +72,54 @@ The following Metadata-information describes Subject definition in OpenSchema sp
 | app | Application deployment unit of the service provider | |
 | description | Description | Provided by the applicant |
 | status | Subject status | For example, released or abandoned |
-| Compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
-| Coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
-| createdtime    | the time when a subject was registered   |  2021-09-14T02:26:09.018    |
-| updatedtime    | the time when a subject was last updated     |  2021-09-15T02:26:09.018    |
+| compatibility | Compatibility setting | None, forward compatibility, backward compatibility, and full compatibility|
+| coordinate | Maven coordinate | Maven coordinate of the JAR of the payload|
+| createdTime    | the time when a subject was registered   |  2021-09-14T02:26:09.018    |
+| lastModifiedTime    | the time when a subject was last updated     |  2021-09-15T02:26:09.018    |
 | format | Enumeration of schema types: NONE, JSON, PB, AVRO, USER-DEFINED, Int, Long, String, and Map | If no schema is provided in a message, the schema type is NONE. You can also add a schema to the current message. For example, you can use PB to describe the format of the data transmitted by the RocketMQ.
 | schema | Data format | Associated data format description. For details, see the following table. |
+
+Example:
+
+```json
+{
+    "tenant": "messaging/rocketmq",
+    "namespace": "org.apache.rocketmq",
+    "subject": "test-topic",
+    "app": "rocketmq",
+    "description": "rocketmq test subject",
+    "status": "released",
+    "compatibility": "NONE",
+    "coordinate": "maven-group:package:1.0.0",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
+    "format": "AVRO",
+    "schema": {}
+}
+```
 
 ### 5.2 Schema Definition
 
 The Payload Schema is used to describe the payload data of a message.
 
-|MetaInfo|Meaning|Instance|
+|Parameter Name|Description|Example|
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | name | Payload name, which can be null. For example, the payload of a message does not need a name. | |
 | id | Globally unique identifier, which is used to identify the schema | |
 | comment | Payload comment | |
-| Serialization | Serialization mode: Hissian, JSON, PB, AVRO, and user-defined | |
+| serialization | Serialization mode: Hissian, JSON, PB, AVRO, and user-defined | |
 | schemaDefinition | Schema content, which is used to describe the data format. | NONE: none PB: PB description file AVRO: AVRO schema content USER-DEFINED: user-defined information Basic content type: none |
-| Validator | Object value validator | Validates the values of objects described in the schema.|
+| validator | Object value validator | Validates the values of objects described in the schema.|
 | version | Schema version | For example, the payload may change. In this case, the version is required to identify different schemas. |
 
 Example:
 
 ```json
 {
-    "subject": "test-topic",
-    "namespace": "org.apache.rocketmq",
-    "tenant": "messaging/rocketmq",
-    "app": "rocketmq",
-    "description": "rocketmq user infomation",
-    "compatibility": "NONE",
-    "validator": "a.groovy",
-    "comment": "Rocketmq user infomation",
-    "createdtime": "2021-09-14T02:26:09.018",
-    "updatedtime": "2021-09-15T02:26:09.018",
-    "format": "AVRO",
+    "name": "rocketmq-user-topic",
+    "id": "SLEd-3334-XSSFE-44983",
+    "comment": "Rocketmq user information",
+    "serialization": "",
     "schemaDefinition": [{
                 "name": "id",
                 "type": "string"
@@ -102,17 +128,19 @@ Example:
                 "name": "age",
                 "type": "short"
         }
-    ]
+    ],
+   "validator": "a.groovy",
+   "version": 1
 }
 ```
 
 
 
-## 6. Correlation Between Subjects and Topics
+## 6. Relationship Between Subjects, Topics and Schemas
 
 ### 6.1 Relationship Between Subjects and Topics
 
-- Messageing system
+- Messaging system
 
 
 Subject Name by default, the value is a topic name, which defines the format of the message body. The value can be extended by suffix ${topic}-${suffix}. For example, in Kafka, Kafka-Key is generally used to define the data format of the key in Kafka messages.
@@ -143,8 +171,8 @@ Subject Name can be defined and customized according to other system's requireme
 | ------------ | ------------- | -------- | -------- | -------- |
 | Common request parameter | tenant | string | Optional | Tenant |
 | | namespace | string | Optional | Namespace |
-| Common Response parameter | error_code | int | Required | Error code |
-| | error_message | string | Required | Error message |
+| Common Response parameter | errorCode | int | Required | Error code |
+| | errorMessage | string | Required | Error message |
 
 - **Version Rules**
 
@@ -160,28 +188,34 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/latest/schema
 
 
 
-### 7.1 Schema-related APIs
+### 7.1 Schema related APIs
 
-#### 7.1. 1 Obtaining Schema Details by ID
+#### 7.1.1 Obtaining Schema Details by ID
 
 - URL
 
 
-GET /schemas/ids/{string: id}
+GET /schemas/{string: id}
 
 - Request parameters
 
 
 |Parameter name|Parameter type|Required or not|Parameter description|
 | -------- | -------- | -------- | ---------------- |
-| id | string | Unique ID of a | schema |
+| id | string | Yes | Unique ID of a schema |
 
 - Response parameters
 
 
 |Parameter name|Parameter type|Required or not|Parameter description|
 | -------- | -------- | -------- | -------------------- |
-| schema | JSON | No | Return the specific schema definition |
+| name | string | No | schema name |
+| id | string | Yes | Unique ID of a schema |
+| comment | string | No | description for this schema |
+| serialization | string | No | schema serialization mode: JSON, AVRO, etc |
+| schemaDefinition | json | Yes | schema definition content |
+| validator | string | No | schema value validator |
+| version | string | Yes | schema version |
 
 - Error code.
 
@@ -201,7 +235,7 @@ GET /schemas/ids/{string: id}
 
 
 ```shell
-curl -X GET http://localhost:8081/schema/ids/1
+curl -X GET http://localhost:8081/schema/20
 ```
 
 - Response Example
@@ -228,12 +262,12 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 
 
-#### 7.1. 2 Obtaining the Subject name and Version Number Based on the ID
+#### 7.1.2 Obtaining the Subject name and Version Number Based on the ID
 
 - URL
 
 
-​ GET /schemas/ids/{string: id}/subjects
+​ GET /schemas/{string: id}/subject
 
 - Request parameters
 
@@ -267,21 +301,21 @@ curl -X GET http://localhost:8081/schema/ids/1
 
 
 ```shell
-curl -X GET http://localhost:8081/schemas/ids/1/versions
+curl -X GET http://localhost:8081/schemas/20/subject
 ```
 
 - Response Example
 
 
 ```json
-[{"subject":"test-topic","version":1}]
+{"subject":"test-topic","version":1}
 ```
 
 
 
-### 7.2 Subject-related API Interfaces
+### 7.2 Subject related APIs
 
-#### 7.2. 1 Obtaining All Subjects
+#### 7.2.1 Obtaining All Subjects
 
 - URL
 
@@ -320,12 +354,77 @@ curl -X GET http://localhost:8081/subjects
 
 
 ```json
-["subject1", "subject2"]
+{ "name": ["subject1", "subject2"] }
 ```
 
 
+#### 7.2.2 Obtaining Subject Definitions
 
-#### 7.2. 2 Obtaining All Versions of a Subject
+- URL
+
+
+GET /subjects/(string: subject)
+
+- Request parameters
+
+|Parameter name|Parameter type|Required or not|Parameter description|
+| -------- | -------- | -------- | ----------- |
+| subject | string | Required | Subject name |
+
+- Response parameters
+
+
+| Parameter Name| Parameter Type| Parameter Description|
+| ------------- | -------- | ---------------------- |
+| subject | string | Subject name |
+| namespace | string | Namespace |
+| tenant | string | Tenant |
+| app | string | Application |
+| compatibility | string | Compatibility setting |
+| coordinate | string | coordinate |
+| status | string | Status |
+| description | string | description |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string     |  the time when a subject was last updated    |
+
+- Error code.
+
+  401:
+
+  40101 - Unauthorized Error
+
+  404:
+
+  40401: The corresponding openschema information does not exist.
+
+  500:
+
+  50001 - Storage Service Error
+
+- Sample request
+
+
+```shell
+curl -X GET http://localhost:8081/subjects/test-value
+```
+
+- Response Example
+
+
+```json
+{
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "JSON",
+    "compatibility": "NONE",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018"
+}
+```
+
+#### 7.2.3 Obtaining All Versions of a Subject
 
 - URL
 
@@ -370,132 +469,15 @@ curl -X GET http://localhost:8081/subjects/test-value/versions
 
 
 ```json
-[1, 2, 3, 4]
+{ "version": [1, 2, 3, 4] }
 ```
 
-
-
-#### 7.2. 3 Delete the subject, compatibility settings along with all versions of schemas belong to this subject.
+#### 7.2.4 Obtaining Schema Definitions Based on Subject and Schema Version
 
 - URL
 
 
-DELETE /subjects/(string: subject)
-
-- Request parameters
-
-|Parameter name|Parameter type|Required or not|Parameter description|
-| -------- | -------- | -------- | ----------- |
-| subject | string | Required | Subject name |
-
-- Response parameters
-
-
-| Parameter Name| Parameter Type| Parameter Description|
-| -------- | -------- | -------- |
-| version | int | Version number |
-
-- Error code.
-
-    401:
-
-    40101 - Unauthorized Error
-
-    404:
-
-    40401: The corresponding openschema information does not exist.
-
-    500:
-
-    50001 - Storage Service Error
-
-- Sample request
-
-
-```shell
-curl -X DELETE http://localhost:8081/subjects/test-value
-```
-
-- Response Example
-
-
-```json
-[1, 2, 3, 4]
-```
-
-
-
-#### 7.2. 4 Obtaining Subject Definitions
-
-- URL
-
-
-GET /subjects/(string: subject)
-
-- Request parameters
-
-|Parameter name|Parameter type|Required or not|Parameter description|
-| -------- | -------- | -------- | ----------- |
-| subject | string | Required | Subject name |
-
-- Response parameters
-
-
-| Parameter Name| Parameter Type| Parameter Description|
-| ------------- | -------- | ---------------------- |
-| subject | string | Subject name |
-| namespace | string | Namespace |
-| tenant | string | Tenant |
-| app | string | Application |
-| compatibility | string | Compatibility setting |
-| coordinate | string | coordinate |
-| status | string | Status |
-| description | string | description |
-| createdtime    | string   |  the time when a subject was registered    |
-| updatedtime    | string     |  the time when a subject was last updated    |
-
-- Error code.
-
-    401:
-
-    40101 - Unauthorized Error
-
-    404:
-
-    40401: The corresponding openschema information does not exist.
-
-    500:
-
-    50001 - Storage Service Error
-
-- Sample request
-
-
-```shell
-curl -X GET http://localhost:8081/subjects/test-value
-```
-
-- Response Example
-
-
-```json
-{
-    "subject": "test-topic",
-    "namespace": "org.apache.rocketmq",
-    "tenant": "messaging/rocketmq",
-    "app": "rocketmq",
-    "description": "JSON",
-    "compatibility": "NONE",
-    "createdtime": "2021-09-14T02:26:09.018",
-    "updatedtime": "2021-09-15T02:26:09.018"
-}
-```
-#### 7.2. 5 Obtaining Schema Definitions Based on Subject and Schema Version
-
-- URL
-
-
-​ GET /subjects/(string: subject)/versions/(version: version)/schema
+GET /subjects/(string: subject)/versions/(version: version)/schema
 
 - Request parameters
 
@@ -517,25 +499,25 @@ curl -X GET http://localhost:8081/subjects/test-value
 | coordinate | string | coordinate |
 | status | string | Status |
 | description | string | description |
-| createdtime    | string   |  the time when a subject was registered    |
-| updatedtime    | string     |  the time when a subject was last updated    |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string     |  the time when a subject was last updated    |
 | schema | JSON | Refer to the schema definition |
 
 - Error code.
 
-    401:
+  401:
 
-    40101 - Unauthorized Error
+  40101 - Unauthorized Error
 
-    404:
+  404:
 
-    40401: The corresponding openschema information does not exist.
+  40401: The corresponding openschema information does not exist.
 
-    40402 - The version does not exist.
+  40402 - The version does not exist.
 
-    500:
+  500:
 
-    50001 - Storage Service Error
+  50001 - Storage Service Error
 
 - Sample request
 
@@ -555,8 +537,8 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
     "app": "rocketmq",
     "description": "rocketmq user information",    
     "compatibility": "NONE",
-    "createdtime": "2021-09-14T02:26:09.018",
-    "updatedtime": "2021-09-15T02:26:09.018",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
     "format": "AVRO",
     "schema": {
         "version": 1,
@@ -579,8 +561,96 @@ curl -X GET http://localhost:8081/subjects/test-value/versions/1/schema
 ```
 
 
+#### 7.2.5 Create or Modify a Subject
 
-#### 7.2. 6 Check and Register New Schemas
+If the same subject does not exist, create a subject.
+
+If yes, modify the related attributes of existing subject.
+
+- URL
+
+
+POST /subjects/(string: subject)/
+
+- Request parameters
+
+|Parameter name|Parameter type|Required or not|Parameter description|
+| ------------- | -------- | -------- | ----------- |
+| tenant | string | Required | Tenant |
+| namespace | string | Required | Namespace |
+| subject | string | Required | Subject name |
+| app | string | | Home app |
+| description | string | | description |
+| status | string | Required | Status |
+| compatibility | string | | Compatibility setting |
+| coordinate | string | | Maven coordinate |
+
+- Response parameters
+
+| Parameter Name| Parameter Type| Parameter Description|
+| ------------- | -------- | ----------- |
+| tenant | string | Tenant |
+| namespace | string | Namespace |
+| subject | string | subject name |
+| app | string | Home app |
+| description | string | description |
+| status | string | Status |
+| compatibility | string | Compatibility policy |
+| coordinate | string | Maven coordinate |
+| createdTime    | string   |  the time when a subject was registered    |
+| lastModifiedTime    | string   |  the time when a subject was last updated    |
+
+- Error code.
+
+  401:
+
+  40101 - Unauthorized Error
+
+  422:
+
+  42201 - Incorrect format
+
+  500:
+
+  50001 - Storage Service Error
+
+  50002 - Timeout
+
+- Sample request
+
+
+```shell
+curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
+http://localhost:8081/subjects/test-value/ --data'
+{
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user information",
+    "compatibility": "NONE",
+    "status": "deprecated"
+}'
+```
+
+- Response Example
+
+
+```json
+{
+    "subject": "test-topic",
+    "namespace": "org.apache.rocketmq",
+    "tenant": "messaging/rocketmq",
+    "app": "rocketmq",
+    "description": "rocketmq user information",
+    "compatibility": "NONE",
+    "createdTime": "2021-09-14T02:26:09.018",
+    "lastModifiedTime": "2021-09-15T02:26:09.018",
+    "status": "deprecated"
+}
+```
+
+#### 7.2.6 Create and Register New Schemas
 
 If the same definition already exists, the current schema ID is returned.
 
@@ -650,109 +720,64 @@ http://localhost:8081/subjects/test-value/versions --data'
 
 
 ```json
-{id":"10"}
+{"id":"10"}
 ```
 
 
-
-#### 7.2. 7 Create or Modify a Subject
-
-If the same subject does not exist, create a subject.
-
-If yes, modify the related attributes of existing subject.
+#### 7.2.7 Delete the subject, compatibility settings along with all versions of schemas belong to this subject.
 
 - URL
 
 
-POST /subjects/(string: subject)/
+DELETE /subjects/(string: subject)
 
 - Request parameters
 
 |Parameter name|Parameter type|Required or not|Parameter description|
-| ------------- | -------- | -------- | ----------- |
-| tenant | string | Required | Tenant |
-| namespace | string | Required | Namespace |
+| -------- | -------- | -------- | ----------- |
 | subject | string | Required | Subject name |
-| app | string | | Home app |
-| description | string | | description |
-| status | string | Required | Status |
-| compatibility | string | | Compatibility setting |
-| coordinate | string | | Maven coordinate |
 
 - Response parameters
 
+
 | Parameter Name| Parameter Type| Parameter Description|
-| ------------- | -------- | ----------- |
-| tenant | string | Tenant |
-| namespace | string | Namespace |
-| subject | string | subject name |
-| app | string | Home app |
-| description | string | description |
-| status | string | Status |
-| compatibility | string | Compatibility policy |
-| coordinate | string | Maven coordinate |
-| createdtime    | string   |  the time when a subject was registered    |
-| updatedtime    | string   |  the time when a subject was last updated    |
+| -------- | -------- | -------- |
+| version | int | Version number |
 
 - Error code.
 
-    401:
+  401:
 
-    40101 - Unauthorized Error
+  40101 - Unauthorized Error
 
-    422:
+  404:
 
-    42201 - Incorrect format
+  40401: The corresponding openschema information does not exist.
 
-    500:
+  500:
 
-    50001 - Storage Service Error
-
-    50002 - Timeout
+  50001 - Storage Service Error
 
 - Sample request
 
 
 ```shell
-curl -X POST -H "Content-Type: application/vnd.openschema.v1+json" \
-http://localhost:8081/subjects/test-value/ --data'
-{
-    "subject": "test-topic",
-    "namespace": "org.apache.rocketmq",
-    "tenant": "messaging/rocketmq",
-    "app": "rocketmq",
-    "description": "rocketmq user information",
-    "compatibility": "NONE",
-    "status": "deprecated"
-}
-'
+curl -X DELETE http://localhost:8081/subjects/test-value
 ```
 
 - Response Example
 
 
 ```json
-{
-    "subject": "test-topic",
-    "namespace": "org.apache.rocketmq",
-    "tenant": "messaging/rocketmq",
-    "app": "rocketmq",
-    "description": "rocketmq user information",
-    "compatibility": "NONE",
-    "createdtime": "2021-09-14T02:26:09.018",
-    "updatedtime": "2021-09-15T02:26:09.018",
-    "status": "deprecated"
-}
+{ "version": [1, 2, 3, 4] }
 ```
 
-
-
-#### 7.2. 8 Delete a Specific Schema Version of a Subject
+#### 7.2.8 Delete a Specific Schema Version of a Subject
 
 - URL
 
 
-​ DELETE /subjects/(string: subject)/versions/(version: version)
+DELETE /subjects/(string: subject)/versions/(version: version)
 
 - Request parameters
 
@@ -794,14 +819,13 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 
 ```json
-1
+{ "version": 1 }
 ```
 
 
+### 7.3 Compatibility related APIs
 
-### 7.3 Compatibility-Related API Interfaces
-
-#### 7.3. 1 Testing if new schema is compatible against Compatibility Setting of this Subject
+#### 7.3.1 Testing if new schema is compatible against Compatibility Setting of this Subject
 
 - URL
 
@@ -820,7 +844,7 @@ curl -X DELETE http://localhost:8081/subjects/test-value/versions/1
 
 | Parameter Name| Parameter Type| Parameter Description|
 | ------------- | -------- | -------- |
-| is_compatible | boolean | Compatible |
+| isCompatible | boolean | Compatible |
 
 - Error code.
 
@@ -857,12 +881,12 @@ http://localhost:8081/compatibility/subjects/test-value/versions/latest
 
 
 ```json
-{"is_compatible": true}
+{"isCompatible": true}
 ```
 
 
 
-#### 7.3. 2 Obtaining Compatibility Setting
+#### 7.3.2 Obtaining Compatibility Setting
 
 - URL
 
