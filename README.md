@@ -6,3 +6,6 @@ Nowadays, it is still in the rapid development process. We released the preview 
 ## Releases
 [1.0.0-preview](https://github.com/openmessaging/openschema/blob/master/spec_en.md)
 
+## Quick Start
+
+[Schema Registry](https://github.com/openmessaging/openschema/tree/master/schema-registry) is the reference implementation for OpenSchema, that you can rely on in your project. We would like to hear any feedback from the community.
