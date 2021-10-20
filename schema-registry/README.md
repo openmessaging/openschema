@@ -27,8 +27,7 @@ OpenSchema Schema Registry provides the following components
 
 ## Project page
 
-You can read more about OpenSchema by going to https://github.com/openmessaging/openschema[the project page]
-
+You can read more about OpenSchema by going to [the project page](https://github.com/openmessaging/openschema)
 ## Building
 
 ### Basic Compile and Test
