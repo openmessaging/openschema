@@ -11,7 +11,7 @@ The Schema Registry deals with the following elements:
 * The schema version which is a specific version of a schema document
 
 
-OpenSchema Schema Registry provides the following compoents
+OpenSchema Schema Registry provides the following components
 
 * Standalone Schema Registry Server
 
@@ -30,8 +30,6 @@ OpenSchema Schema Registry provides the following compoents
 You can read more about OpenSchema by going to https://github.com/openmessaging/openschema[the project page]
 
 ## Building
-
-:jdkversion: 1.8
 
 ### Basic Compile and Test
 
