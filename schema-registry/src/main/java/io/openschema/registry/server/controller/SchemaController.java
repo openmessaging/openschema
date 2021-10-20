@@ -29,13 +29,13 @@ public class SchemaController {
     @Autowired
     SchemaService schemaService;
 
-    @GetMapping("/ids/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Schema> fetchSchemaById(@PathVariable("id") long id){
         Schema schema = schemaService.getSchemaById(id);
         return ResponseEntity.ok(schema);
     }
 
-    @GetMapping("/ids/{id}/subjects")
+    @GetMapping("/{id}/subject")
     public ResponseEntity<SubjectAndVersionResponse> fetchSubjectAndVersionById(@PathVariable("id") long id){
         SubjectAndVersionResponse subjectAndVersionResponse = schemaService.getSubjectAndVersionById(id);
         return ResponseEntity.ok(subjectAndVersionResponse);

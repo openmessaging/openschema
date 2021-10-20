@@ -24,6 +24,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ErrorResponse {
-    private String err_code;
-    private String err_message;
+    private String errorCode;
+    private String errorMessage;
 }
