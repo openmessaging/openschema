@@ -39,7 +39,7 @@ should be able to get off the ground quite quickly by cloning the
 project you are interested in and typing
 
 ```
-$ ./mvnw clean install -DskipTests
+$ ./mvn clean install -DskipTests
 ```
 
 This should result in producing an executable JAR, and in-memory persistence implementation.
