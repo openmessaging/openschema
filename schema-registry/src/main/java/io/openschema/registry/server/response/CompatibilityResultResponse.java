@@ -24,5 +24,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompatibilityResultResponse {
-    boolean is_compatibility;
+    boolean isCompatibility;
 }

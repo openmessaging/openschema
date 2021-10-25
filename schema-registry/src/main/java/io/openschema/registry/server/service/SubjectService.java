@@ -18,7 +18,11 @@ package io.openschema.registry.server.service;
 
 import io.openschema.registry.server.common.util.ConverterUtil;
 import io.openschema.registry.server.common.util.JsonUtils;
-import io.openschema.registry.server.domain.*;
+import io.openschema.registry.server.domain.SchemaWithSubjectName;
+import io.openschema.registry.server.domain.Subject;
+import io.openschema.registry.server.domain.Schema;
+import io.openschema.registry.server.domain.Compatibility;
+import io.openschema.registry.server.domain.SubjectWithSchema;
 import io.openschema.registry.server.exception.ExceptionEnum;
 import io.openschema.registry.server.exception.OpenSchemaException;
 import io.openschema.registry.server.repository.SchemaRepository;
@@ -146,60 +150,60 @@ public class SubjectService {
         SchemaIdResponse schemaIdResponse = schemaWithNames
                 .stream()
                 .filter(schemaWithSubjectName
-                        -> schema.getSerialization().equals(schemaWithSubjectName.getSerialization())                        
-                        && schema.getSchemaDefinition().equals(schemaWithSubjectName.getSchemaType()))
+                    -> schema.getSerialization().equals(schemaWithSubjectName.getSerialization())                        
+                    && schema.getSchemaDefinition().equals(schemaWithSubjectName.getSchemaType()))
                 .findFirst()
                 .map(schemaWithSubjectName
-                        -> new SchemaIdResponse(String.valueOf(schemaWithSubjectName.getId())))
+                    -> new SchemaIdResponse(String.valueOf(schemaWithSubjectName.getId())))
                 .orElse(null);
 
-        if (schemaIdResponse == null) {        	
-        	try {
-        		String schemaDefinitionStr = JsonUtils.toJson(schema.getSchemaDefinition());        		
-        		int version = schemaWithNames.size();
-        		if (version > 0) {
-        			version = schemaWithNames.get(0).getVersion();
-        		}
-	        	SchemaWithSubjectName schemaWithSubjectName = SchemaWithSubjectName
-	                    .builder()
-	                    .name(schema.getName())
-	                    .comment(schema.getComment())
-	                    .serialization(schema.getSerialization())	                    
-	                    .schemaDefinition(schemaDefinitionStr)
-	                    .validator(schema.getValidator())
-	                    .version(version + 1)
-	                    .subject(subject)
-	                    .build();	        
+        if (schemaIdResponse == null) {
+            try {
+                String schemaDefinitionStr = JsonUtils.toJson(schema.getSchemaDefinition());
+                int version = schemaWithNames.size();
+                if (version > 0) {
+                    version = schemaWithNames.get(0).getVersion();
+                }
+                SchemaWithSubjectName schemaWithSubjectName = SchemaWithSubjectName
+                    .builder()
+                    .name(schema.getName())
+                    .comment(schema.getComment())
+                    .serialization(schema.getSerialization())
+                    .schemaDefinition(schemaDefinitionStr)
+                    .validator(schema.getValidator())
+                    .version(version + 1)
+                    .subject(subject)
+                    .build();
                 SchemaWithSubjectName save = schemaRepository.save(schemaWithSubjectName);
                 schemaIdResponse = new SchemaIdResponse(String.valueOf(save.getId()));
             } catch (Exception e) {
                 throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
-            } 
+            }
 
         }
         return schemaIdResponse;
     }
     
     @Transactional
-    public Subject updateSubjectIfDifferent(String subjectName, Subject subject) {        
-    	long timestamp = converterUtil.timestamp();
-    	String createdTime = converterUtil.toLocalTime(timestamp);        	
-    	subject.setCreatedTime(createdTime);
-    	subject.setLastModifiedTime(createdTime);
-    	
-    	Subject subjectObj = null;
-        Subject returnSubject = null;        
+    public Subject updateSubjectIfDifferent(String subjectName, Subject subject) {
+        long timestamp = converterUtil.timestamp();
+        String createdTime = converterUtil.toLocalTime(timestamp);
+        subject.setCreatedTime(createdTime);
+        subject.setLastModifiedTime(createdTime);
+
+        Subject subjectObj = null;
+        Subject returnSubject = null;
         try {
             subjectObj = subjectRepository.getSubjectBySubject(subjectName);
         } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
-        }                      
-    	if (subjectObj == null) {        
+        }
+        if (subjectObj == null) {
             returnSubject = subjectRepository.save(subject);
         } else {
             if (subjectObj.getSubject().equals(subject.getSubject())) {
-            	subject.setCreatedTime(subjectObj.getCreatedTime());
-            	returnSubject = subjectRepository.save(subject);
+                subject.setCreatedTime(subjectObj.getCreatedTime());
+                returnSubject = subjectRepository.save(subject);
             } else {
                 //todo
                 // if compatibility is changed, the left schemas should satisfy compatibility

@@ -31,14 +31,14 @@ public class SchemaService {
     @Autowired
     SchemaRepository schemaRepository;
 
-    public Schema getSchemaById(long id){
+    public Schema getSchemaById(long id) {
         SchemaWithSubjectName schemaWithSubjectName = null;
         try {
             schemaWithSubjectName = schemaRepository.getSchemaById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
-        if(schemaWithSubjectName==null){
+        if (schemaWithSubjectName == null) {
             throw new OpenSchemaException(ExceptionEnum.SchemaNonExist);
         }
         Schema schema = new Schema();
@@ -52,14 +52,14 @@ public class SchemaService {
         return schema;
     }
 
-    public SubjectAndVersionResponse getSubjectAndVersionById(long id){
+    public SubjectAndVersionResponse getSubjectAndVersionById(long id) {
         SchemaWithSubjectName schemaWithSubjectName = null;
         try {
             schemaWithSubjectName = schemaRepository.getSchemaById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
-        if(schemaWithSubjectName==null){
+        if (schemaWithSubjectName == null) {
             throw new OpenSchemaException(ExceptionEnum.SchemaNonExist);
         }
         return new SubjectAndVersionResponse(schemaWithSubjectName.getSubject(), schemaWithSubjectName.getVersion());

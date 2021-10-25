@@ -24,8 +24,13 @@ import io.openschema.registry.server.response.SchemaIdResponse;
 import io.openschema.registry.server.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
@@ -36,49 +41,49 @@ public class SubjectController {
     SubjectService subjectService;
 
     @GetMapping({"","/"})
-    public ResponseEntity<List<String>> getAllSubjects(){
+    public ResponseEntity<List<String>> getAllSubjects() {
         List<String> subjects = subjectService.getAllSubjects();
         return ResponseEntity.ok(subjects);
     }
 
     @GetMapping("/{subject}/versions")
-    public ResponseEntity<List<Integer>> getAllVersionBySubject(@PathVariable("subject") String subject){
+    public ResponseEntity<List<Integer>> getAllVersionBySubject(@PathVariable("subject") String subject) {
         List<Integer> versions = subjectService.getAllVersionsBySubject(subject);
         return ResponseEntity.ok(versions);
     }
 
     @DeleteMapping("/{subject}")
-    public ResponseEntity<List<Integer>> deleteSubjectAndAllSchemaBySubject(@PathVariable("subject") String subject){
+    public ResponseEntity<List<Integer>> deleteSubjectAndAllSchemaBySubject(@PathVariable("subject") String subject) {
         List<Integer> versions = subjectService.deleteSubjectAndAllSchemaBySubject(subject);
         return ResponseEntity.ok(versions);
     }
 
     @GetMapping("/{subject}")
-    public ResponseEntity<Subject> getSubjectByName(@PathVariable("subject") String subject){
+    public ResponseEntity<Subject> getSubjectByName(@PathVariable("subject") String subject) {
         Subject getSubject = subjectService.getSubjectByName(subject);
         return ResponseEntity.ok(getSubject);
     }
 
     @GetMapping("/{subject}/versions/{version}/schema")
-    public ResponseEntity<SubjectWithSchema> getSchemaBySubjectAndVersion(@PathVariable("subject")String subject, @PathVariable("version")int version){
+    public ResponseEntity<SubjectWithSchema> getSchemaBySubjectAndVersion(@PathVariable("subject")String subject, @PathVariable("version")int version) {
         SubjectWithSchema subjectWithSchema = subjectService.getSchemaBySubjectAndVersion(subject, version);
         return ResponseEntity.ok(subjectWithSchema);
     }
 
     @PostMapping("/{subject}/versions")
-    public ResponseEntity<SchemaIdResponse> checkOrRegisterSchema(@PathVariable("subject") String subject, @RequestBody Schema schema){
+    public ResponseEntity<SchemaIdResponse> checkOrRegisterSchema(@PathVariable("subject") String subject, @RequestBody Schema schema) {
         SchemaIdResponse schemaIdResponse = subjectService.checkOrRegisterSchema(subject, schema);
         return ResponseEntity.ok(schemaIdResponse);
     }
 
     @PostMapping("/{subject}")
-    public ResponseEntity<Subject> updateSubjectIfDifferent(@PathVariable("subject") String subjectName, @RequestBody Subject subject){
+    public ResponseEntity<Subject> updateSubjectIfDifferent(@PathVariable("subject") String subjectName, @RequestBody Subject subject) {
         Subject updatedSubject = subjectService.updateSubjectIfDifferent(subjectName, subject);
         return ResponseEntity.ok(updatedSubject);
     }
 
     @DeleteMapping("/{subject}/versions/{version}")
-    public ResponseEntity<Integer> deleteSchemaBySubjectAndVersion(@PathVariable("subject")String subject, @PathVariable("version") int version){
+    public ResponseEntity<Integer> deleteSchemaBySubjectAndVersion(@PathVariable("subject")String subject, @PathVariable("version") int version) {
         Integer deletedId = subjectService.deleteSchemaBySubjectAndVersion(subject, version);
         return ResponseEntity.ok(deletedId);
     }

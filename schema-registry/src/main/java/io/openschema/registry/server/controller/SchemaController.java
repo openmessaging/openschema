@@ -21,7 +21,10 @@ import io.openschema.registry.server.response.SubjectAndVersionResponse;
 import io.openschema.registry.server.service.SchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/schemas")
@@ -30,13 +33,13 @@ public class SchemaController {
     SchemaService schemaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Schema> fetchSchemaById(@PathVariable("id") long id){
+    public ResponseEntity<Schema> fetchSchemaById(@PathVariable("id") long id) {
         Schema schema = schemaService.getSchemaById(id);
         return ResponseEntity.ok(schema);
     }
 
     @GetMapping("/{id}/subject")
-    public ResponseEntity<SubjectAndVersionResponse> fetchSubjectAndVersionById(@PathVariable("id") long id){
+    public ResponseEntity<SubjectAndVersionResponse> fetchSubjectAndVersionById(@PathVariable("id") long id) {
         SubjectAndVersionResponse subjectAndVersionResponse = schemaService.getSubjectAndVersionById(id);
         return ResponseEntity.ok(subjectAndVersionResponse);
     }

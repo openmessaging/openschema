@@ -32,7 +32,7 @@ You can read more about OpenSchema by going to [the project page](https://github
 
 ### Basic Compile and Test
 
-To build the source you will need to install JDK {jdkversion}.
+To build the source you will need to install JDK 1.8.
 
 OpenSchema Schema Registry uses Maven for build-related activities, and you
 should be able to get off the ground quite quickly by cloning the

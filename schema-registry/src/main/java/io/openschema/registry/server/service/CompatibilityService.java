@@ -37,25 +37,25 @@ public class CompatibilityService {
     SchemaRepository schemaRepository;
 
 
-    public CompatibilityResultResponse checkWhetherCompatible(String subject, Integer version, Schema schema){
+    public CompatibilityResultResponse checkWhetherCompatible(String subject, Integer version, Schema schema) {
         Subject subjectObj = null;
         Schema schemaObj = null;
         CompatibilityResultResponse response = null;
         try {
             subjectObj = subjectRepository.getSubjectBySubject(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
-        if(subjectObj == null){
+        if (subjectObj == null) {
             throw new OpenSchemaException(ExceptionEnum.SubjectNonExist);
         }
 
         try {
             schemaObj = schemaRepository.getSchemaBySubjectAndVersion(subject, version);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
-        if(schemaObj == null){
+        if (schemaObj == null) {
             throw new OpenSchemaException(ExceptionEnum.SchemaNonExist);
         }
         // todo check the compatibility
@@ -64,36 +64,36 @@ public class CompatibilityService {
     }
 
 
-    public Compatibility getCompatibilityBySubject(String subject){
+    public Compatibility getCompatibilityBySubject(String subject) {
         Subject subjectObj = null;
         try {
             subjectObj = subjectRepository.getSubjectBySubject(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
 
-        if(subjectObj==null){
+        if (subjectObj == null) {
             throw new OpenSchemaException(ExceptionEnum.SubjectNonExist);
         }
 
         return new Compatibility(subjectObj.getCompatibility());
     }
 
-    public Compatibility updateCompatibilityBySubject(String subject, Compatibility compatibility){
+    public Compatibility updateCompatibilityBySubject(String subject, Compatibility compatibility) {
         Subject subjectObj = null;
         try {
             subjectObj = subjectRepository.getSubjectBySubject(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
-        if(subjectObj == null){
+        if (subjectObj == null) {
             throw new OpenSchemaException(ExceptionEnum.SubjectNonExist);
         }
         subjectObj.setCompatibility(compatibility.getCompatibility());
         try {
             // todo check the compatibility among schemas of newly set compatibility
             subjectRepository.save(subjectObj);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new OpenSchemaException(ExceptionEnum.StorageServiceException);
         }
         return compatibility;
