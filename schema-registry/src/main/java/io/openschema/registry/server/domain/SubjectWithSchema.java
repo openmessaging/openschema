@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubjectWithSchema {
 
-    public SubjectWithSchema(Subject subject, Schema schema){
+    public SubjectWithSchema(Subject subject, Schema schema) {
         this.subject = subject.getSubject();
         this.tenant = subject.getTenant();
         this.namespace = subject.getNamespace();

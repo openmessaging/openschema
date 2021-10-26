@@ -24,14 +24,14 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OpenSchemaException extends RuntimeException{
-    protected HttpStatus err_status;
-    protected String err_code;
-    protected String err_message;
+public class OpenSchemaException extends RuntimeException {
+    protected HttpStatus errStatus;
+    protected String errCode;
+    protected String errMessage;
 
-    public OpenSchemaException(ExceptionEnum e){
-        this.err_status = e.getStatus();
-        this.err_code = e.getExceptionCode();
-        this.err_message = e.getDescription();
+    public OpenSchemaException(ExceptionEnum e) {
+        this.errStatus = e.getStatus();
+        this.errCode = e.getExceptionCode();
+        this.errMessage = e.getDescription();
     }
 }
