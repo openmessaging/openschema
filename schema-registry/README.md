@@ -45,7 +45,7 @@ $ ./mvn clean install -DskipTests
 This should result in producing an executable JAR, and in-memory persistence implementation.
 
 ```
-java -jar target/registry-server-0.0.1-SNAPSHOT.jar
+java -jar target/registry-server-1.0.0-SNAPSHOT.jar
 ```
 
 This should result in the Schema Registry starting up and the registry available on localhost port 8081
