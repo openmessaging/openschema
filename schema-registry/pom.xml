@@ -18,7 +18,6 @@
         <artifactId>oss-parent</artifactId>
         <version>9</version>
     </parent>
-git
     <licenses>
         <license>
             <name>Apache License 2.0</name>
