@@ -13,6 +13,12 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
