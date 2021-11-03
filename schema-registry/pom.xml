@@ -21,6 +21,13 @@
         </license>
     </licenses>
 
+	<scm>
+		<url>git@github.com:openmessaging/openschema.git</url>
+		<connection>scm:git:git@github.com:openmessaging/openschema.git</connection>
+		<developerConnection>scm:git:git@github.com:openmessaging/openschema.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 	<!--  <repositories>
 		<repository>
 		    <id>jitpack.io</id>
