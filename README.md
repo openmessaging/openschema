@@ -8,4 +8,4 @@ Nowadays, it is still in the rapid development process. We released the preview 
 
 ## Quick Start
 
-[Schema Registry](https://github.com/openmessaging/openschema/tree/master/schema-registry) is the reference implementation for OpenSchema, that you can rely on in your project. We would like to hear any feedback from the community.
+[Schema Registry](https://github.com/openmessaging/schemaregistry) is the reference implementation for OpenSchema, that you can rely on in your project. We would like to hear any feedback from the community.
